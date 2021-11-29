@@ -47,9 +47,10 @@ int	main(int argc, char **argv)
 
 	while (i > 0)
 	{
-		usleep(500);
-	printf("Passed time: %zu\n", time_passed(info.start_time));
-	i--;	
+		sleep(2);
+		float nu = (float)time_passed(info.start_time) / 1000000;
+		printf("Passed time: %f seconds\n", nu);
+		i--;	
 	}
 	return 0;
 }
