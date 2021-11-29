@@ -1,7 +1,8 @@
 NAME = 		philosopher
 NO_BONUS =	philosopher.c
 DO_BONUS =	pipex_bonus.c
-SHARED =	#utils.c
+SHARED =	utils.c \
+			parser.c
 
 ifdef BONUS
 SRC = $(DO_BONUS) $(SHARED)

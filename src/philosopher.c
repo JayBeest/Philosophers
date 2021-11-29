@@ -1,56 +1,91 @@
-#include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <philosopher.h>
+#include <parser.h>
+#include <utils.h>
 
-void	ft_bzero(void *ptr, size_t n)
-{
-	while (n > 0)
-	{
-		*(char *)ptr = 0;
-		ptr++;
-		n--;
-	}
-}
+#include <sys/errno.h>
 
-t_timing	set_start_time(void)
+t_time_stamp	set_start_time(void)
 {
-	t_timing		new;
+	t_time_stamp	time_stamp;
 	struct timeval	current;
 
 	gettimeofday(&current, NULL);
-	new.sec = current.tv_sec;
-	new.usec = current.tv_usec;
-	printf("start time:%ld milis: %d\n", current.tv_sec, current.tv_usec);
-	return (new);
+	time_stamp.sec = current.tv_sec;
+	time_stamp.usec = current.tv_usec;
+	return (time_stamp);
 }
 
-size_t	time_passed(t_timing start)
+size_t	ms_passed(t_time_stamp start)
 {
 	size_t			passed;
 	struct timeval	current;
 
 	gettimeofday(&current, NULL);
-	passed = (current.tv_sec - start.sec) * 1000000 + current.tv_usec - start.usec;
+	passed = (current.tv_sec - start.sec) * 1000 + (current.tv_usec - start.usec) / 1000;
 	return (passed);
+}
+
+// void	*philo_thread(t_settings settings, t_philo *philo, t_mutex *mutex)
+// {
+	
+// }
+
+t_bool	init_mutexes(int num_philos, t_mutex *mutex)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_philos)
+	{
+		if (pthread_mutex_init(&mutex->fork[i], NULL) != 0)
+			return (FALSE);
+		i++;
+	}
+	if (pthread_mutex_init(&mutex->dead, NULL) != 0)
+		return (FALSE);
+	return (TRUE);
+}
+
+void	destroy_mutexes(int num_philos, t_mutex *mutex)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_philos)
+	{
+		if (pthread_mutex_destroy(&mutex->fork[i]) != 0)
+			printf("mutex_destroy FAIL (fork[%d]) -->errno=%d\n", i, errno);
+		i++;
+	}
+	if (pthread_mutex_destroy(&mutex->dead) != 0)
+		printf("mutex_destroy FAIL (dead) -->errno=%d\n", errno);
 }
 
 int	main(int argc, char **argv)
 {
 	t_info	info;
-	(void)argc;
-	(void)argv;
 
+	if (argc < 5 || argc > 6)
+		return (1);
 	ft_bzero(&info, sizeof(info));
-	int i = 20;
+	if (parse_input(argc, argv, &info.settings) == FALSE)
+		return (2);
 	info.start_time = set_start_time();
+	printf("ph_num=%d, die=%d, eat=%d, sleep=%d, max_eat=%d\n", info.settings.num_philos, info.settings.die_time, info.settings.eat_time, info.settings.sleep_time, info.settings.max_eat);
 
+	init_mutexes(info.settings.num_philos, &info.mutex);
+
+	int i = 20;
 	while (i > 0)
 	{
-		sleep(2);
-		float nu = (float)time_passed(info.start_time) / 1000000;
-		printf("Passed time: %f seconds\n", nu);
+		usleep(500000);
+		size_t nu = ms_passed(info.start_time);
+		printf("Passed time: %lu ms\n", nu);
 		i--;	
 	}
+
+	destroy_mutexes(info.settings.num_philos, &info.mutex);
 	return 0;
 }
