@@ -27,10 +27,14 @@ size_t	ms_passed(t_time_stamp start)
 	return (passed);
 }
 
-// void	*philo_thread(t_settings settings, t_philo *philo, t_mutex *mutex)
-// {
-	
-// }
+void	*philo_thread()
+{
+	// (void)info;
+	static int i = 0;
+	i++;
+	printf("This is from the thread int=%d\n", i);
+	return NULL;
+}
 
 t_bool	init_mutexes(int num_philos, t_mutex *mutex)
 {
@@ -63,6 +67,19 @@ void	destroy_mutexes(int num_philos, t_mutex *mutex)
 		printf("mutex_destroy FAIL (dead) -->errno=%d\n", errno);
 }
 
+void	start_philos(t_info *info)
+{
+	int	i;
+
+	i = 0;
+	while (i < info->settings.num_philos)
+	{
+		if (pthread_create(&info->philo[i].thread, NULL, philo_thread, NULL) != 0)
+			printf("Thread_create FAIL (philo[%d]) -->errno=%d\n", i, errno);
+		i++;
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_info	info;
@@ -72,10 +89,10 @@ int	main(int argc, char **argv)
 	ft_bzero(&info, sizeof(info));
 	if (parse_input(argc, argv, &info.settings) == FALSE)
 		return (2);
-	info.start_time = set_start_time();
 	printf("ph_num=%d, die=%d, eat=%d, sleep=%d, max_eat=%d\n", info.settings.num_philos, info.settings.die_time, info.settings.eat_time, info.settings.sleep_time, info.settings.max_eat);
-
 	init_mutexes(info.settings.num_philos, &info.mutex);
+	info.start_time = set_start_time();
+	start_philos(&info);
 
 	int i = 20;
 	while (i > 0)
