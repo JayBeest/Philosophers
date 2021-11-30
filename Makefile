@@ -1,6 +1,18 @@
+# ************************************************************************** #
+#                                                                            #
+#                                                        :::      ::::::::   #
+#   Makefile                                           :+:      :+:    :+:   #
+#                                                    +:+ +:+         +:+     #
+#   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        #
+#                                                +#+#+#+#+#+   +#+           #
+#   Created: 2021/11/30 02:05:25 by jcorneli          #+#    #+#             #
+#   Updated: 2021/11/30 02:05:25 by jcorneli         ###   ########.fr       #
+#                                                                            #
+# ************************************************************************** #
+
 NAME = 		philosopher
 NO_BONUS =	philosopher.c
-DO_BONUS =	pipex_bonus.c
+DO_BONUS =
 SHARED =	utils.c \
 			parser.c
 
