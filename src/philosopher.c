@@ -57,19 +57,38 @@ void	destroy_mutexes(int num_philos, t_mutex *mutex)
 		printf("mutex_destroy FAIL (dead) -->errno=%d\n", errno);
 }
 
-// void	sleep_now(t_msecs ms)
-// {
-// 	t_time_stamp	start;
-// 	t_usecs			total_sleep;
-// 	t_usecs			last_sleep;
-// 	t_usecs			delta;
+void	sleep_now(t_msecs ms)
+{
+	t_time_stamp	start;
+	t_usecs			total_sleep;
+	t_usecs			next_sleep;
+	// t_time_stamp	delta;
+	int				i;
 
+	i = 1;
+	next_sleep = 1000;
+	// ms *= 5;
+	start = set_start_time();
+	while (i <= ms)
+	{	
+		// delta = set_start_time();
+		usleep(next_sleep);
+		next_sleep += 1000 * i - (passed(start, US) );
+		if (next_sleep < 0)
+			next_sleep = 0;
+		total_sleep = passed(start, US);
+		printf("total_sleep =%lu us ==>next_sleep=%lu us\n", total_sleep, next_sleep);
+		i++;
+	}
+	total_sleep = passed(start, US);
+	printf("total sleep = %lu\n", total_sleep);
 
-// 	ms *= 1000;
-// 	start = set_start_time();
-
-
-// }
+	printf("\n====>CHANGE<====\n\n");
+	start = set_start_time();
+	usleep(30000);
+	total_sleep = passed(start, US);
+	printf("plain_old_usleep = %lu us\n\n", total_sleep);
+}
 
 void	*philo_thread(void *arg)
 {
@@ -177,6 +196,7 @@ int	main(int argc, char **argv)
 		return (2);
 	init_struct(&info);
 	printf("ph_num=%d, die=%ld, eat=%ld, sleep=%ld, max_eat=%d\n", info.settings.num_philos, info.settings.die_time, info.settings.eat_time, info.settings.sleep_time, info.settings.max_eat);
+	sleep_now(30);
 	start_philos(&info);
 
 //	int i = 20;
