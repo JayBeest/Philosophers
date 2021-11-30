@@ -13,6 +13,8 @@
 #include <philosopher.h>
 #include <utils.h>
 
+#include <stdlib.h>
+
 static t_bool	is_int(char *str)
 {
 	str = ft_skipspace(str);

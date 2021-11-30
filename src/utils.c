@@ -10,16 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string.h>
 #include <philosopher.h>
 
 void	ft_bzero(void *ptr, size_t n)
 {
-	while (n > 0)
-	{
-		*(char *)ptr = 0;
-		ptr++;
-		n--;
-	}
+	memset(ptr, 0, n);
 }
 
 int	ft_isdigit(int c)

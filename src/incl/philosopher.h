@@ -29,6 +29,12 @@ typedef enum e_bool
 	TRUE
 }			t_bool;
 
+typedef enum e_err
+{
+	NO_ERROR,
+	MALLOC_FAIL
+}			t_err;
+
 typedef struct s_time_stamp
 {
 	t_secs	sec;
@@ -44,16 +50,17 @@ typedef enum e_time_unit
 
 typedef struct s_settings
 {
-	int			num_philos;
-	t_msecs		die_time;
-	t_msecs		eat_time;
-	t_msecs		sleep_time;
-	int			max_eat;
+	int				num_philos;
+	t_msecs			die_time;
+	t_msecs			eat_time;
+	t_msecs			sleep_time;
+	int				max_eat;
+	t_time_stamp	start_time;
 }			t_settings;
 
 typedef struct s_mutex
 {
-	pthread_mutex_t	fork[MAX_THREADS];
+	pthread_mutex_t	*fork;
 	pthread_mutex_t	dead;
 	pthread_mutex_t	id;
 }			t_mutex;
@@ -62,8 +69,7 @@ typedef struct s_philo
 {
 	pthread_t	thread;
 	int			id;
-	int 		nr_philos;
-	t_settings	settings;
+	t_settings	*settings;
 	t_mutex		*mutex;
 }			t_philo;
 
@@ -72,8 +78,7 @@ typedef struct s_info
 	t_mutex			mutex;
 	t_settings		settings;
 
-	t_philo			philo[MAX_THREADS];
-	t_time_stamp	start_time;
+	t_philo			*philo;
 }			t_info;
 
 #endif
