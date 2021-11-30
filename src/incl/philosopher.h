@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:49 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/11/30 02:04:49 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/11/30 03:35:18 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,21 @@
 
 #include <stdio.h>
 
+typedef long t_secs;
+typedef long t_msecs;
+typedef long t_usecs;
+
 typedef enum e_bool
 {
 	FALSE,
 	TRUE
 }			t_bool;
+
+typedef struct s_time_stamp
+{
+	t_secs	sec;
+	t_usecs	usec;
+}			t_time_stamp;
 
 typedef enum e_time_unit
 {
@@ -35,36 +45,35 @@ typedef enum e_time_unit
 typedef struct s_settings
 {
 	int			num_philos;
-	int			die_time;
-	int			eat_time;
-	int			sleep_time;
+	t_msecs		die_time;
+	t_msecs		eat_time;
+	t_msecs		sleep_time;
 	int			max_eat;
 }			t_settings;
-
-typedef struct s_time_stamp
-{
-	long int	sec;
-	int			usec;
-}			t_time_stamp;
 
 typedef struct s_mutex
 {
 	pthread_mutex_t	fork[MAX_THREADS];
 	pthread_mutex_t	dead;
+	pthread_mutex_t	id;
 }			t_mutex;
 
 typedef struct s_philo
 {
-	int			id;
 	pthread_t	thread;
+	int			id;
+	int 		nr_philos;
+	t_settings	settings;
+	t_mutex		*mutex;
 }			t_philo;
 
 typedef struct s_info
 {
-	t_philo			philo[MAX_THREADS];
 	t_mutex			mutex;
-	t_time_stamp	start_time;
 	t_settings		settings;
+
+	t_philo			philo[MAX_THREADS];
+	t_time_stamp	start_time;
 }			t_info;
 
 #endif
