@@ -17,23 +17,16 @@ t_time_stamp	set_start_time(void)
 	return (time_stamp);
 }
 
-size_t	ms_passed(t_time_stamp start)
+size_t	passed(t_time_stamp start, t_time_unit time_unit)
 {
-	size_t			passed;
 	struct timeval	current;
 
 	gettimeofday(&current, NULL);
-	passed = (current.tv_sec - start.sec) * 1000 + (current.tv_usec - start.usec) / 1000;
-	return (passed);
-}
-
-void	*philo_thread()
-{
-	// (void)info;
-	static int i = 0;
-	i++;
-	printf("This is from the thread int=%d\n", i);
-	return NULL;
+	if (time_unit == S)
+		return ((current.tv_sec - start.sec) * 1 + (current.tv_usec - start.usec) / 1000000);
+	else if (time_unit == MS)
+		return ((current.tv_sec - start.sec) * 1000 + (current.tv_usec - start.usec) / 1000);
+	return ((current.tv_sec - start.sec) * 1000000 + (current.tv_usec - start.usec));
 }
 
 t_bool	init_mutexes(int num_philos, t_mutex *mutex)
@@ -67,6 +60,20 @@ void	destroy_mutexes(int num_philos, t_mutex *mutex)
 		printf("mutex_destroy FAIL (dead) -->errno=%d\n", errno);
 }
 
+void	*philo_thread(void *arg)
+{
+	t_info		*info;
+	static int	id;
+
+	id++;
+	info = (t_info *)arg;
+	printf("This is from thread %d ====>", id);
+	printf("Started after %zu us\n", passed(info->start_time, US));
+//	printf("Started after %zu ms\n", passed(info->start_time, MS));
+//	printf("Started after %zu s\n", passed(info->start_time, S));
+	return NULL;
+}
+
 void	start_philos(t_info *info)
 {
 	int	i;
@@ -74,8 +81,21 @@ void	start_philos(t_info *info)
 	i = 0;
 	while (i < info->settings.num_philos)
 	{
-		if (pthread_create(&info->philo[i].thread, NULL, philo_thread, NULL) != 0)
+		if (pthread_create(&info->philo[i].thread, NULL, &philo_thread, info) != 0)
 			printf("Thread_create FAIL (philo[%d]) -->errno=%d\n", i, errno);
+		i++;
+	}
+}
+
+void	join_philos(t_info *info)
+{
+	int	i;
+
+	i = 0;
+	while (i < info->settings.num_philos)
+	{
+		if (pthread_join(info->philo[i].thread, NULL) != 0)
+			printf("Thread_join FAIL (philo[%d]) -->errno=%d\n", i, errno);
 		i++;
 	}
 }
@@ -94,15 +114,15 @@ int	main(int argc, char **argv)
 	info.start_time = set_start_time();
 	start_philos(&info);
 
-	int i = 20;
-	while (i > 0)
-	{
-		usleep(500000);
-		size_t nu = ms_passed(info.start_time);
-		printf("Passed time: %lu ms\n", nu);
-		i--;	
-	}
-
+//	int i = 20;
+//	while (i > 0)
+//	{
+//		usleep(500000);
+//		size_t nu = ms_passed(info.start_time);
+//		printf("Passed time: %lu ms\n", nu);
+//		i--;
+//	}
+	join_philos(&info);
 	destroy_mutexes(info.settings.num_philos, &info.mutex);
 	return 0;
 }

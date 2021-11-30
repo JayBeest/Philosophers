@@ -1,7 +1,7 @@
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
 
-# define MAX_THREADS 1024
+# define MAX_THREADS 512
 
 # include <pthread.h>
 
@@ -12,6 +12,13 @@ typedef enum e_bool
 	FALSE,
 	TRUE
 }			t_bool;
+
+typedef enum e_time_unit
+{
+	S,
+	MS,
+	US
+}			t_time_unit;
 
 typedef struct s_settings
 {
