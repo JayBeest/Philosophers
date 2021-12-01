@@ -6,16 +6,20 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:05:19 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/11/30 02:05:19 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/11/30 22:30:09 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
 #include <philosopher.h>
 
 void	ft_bzero(void *ptr, size_t n)
 {
-	memset(ptr, 0, n);
+	while (n > 0)
+	{
+		*(char *)ptr = 0;
+		ptr++;
+		n--;
+	}
 }
 
 int	ft_isdigit(int c)

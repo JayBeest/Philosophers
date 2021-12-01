@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:44 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/11/30 04:28:22 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/11/30 23:59:26 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_time_stamp	set_start_time(void)
 	return (time_stamp);
 }
 
-size_t	passed(t_time_stamp start, t_time_unit time_unit)
+long	passed(t_time_stamp start, t_time_unit time_unit)
 {
 	struct timeval	current;
 
@@ -62,22 +62,20 @@ void	sleep_now(t_msecs ms)
 	t_time_stamp	start;
 	t_usecs			total_sleep;
 	t_usecs			next_sleep;
-	// t_time_stamp	delta;
 	int				i;
 
 	i = 1;
 	next_sleep = 1000;
-	// ms *= 5;
+	ms *= 1;
 	start = set_start_time();
 	while (i <= ms)
 	{	
-		// delta = set_start_time();
 		usleep(next_sleep);
-		next_sleep += 1000 * i - (passed(start, US) );
+		next_sleep += 1000 * i - passed(start, US) + 128;
 		if (next_sleep < 0)
 			next_sleep = 0;
-		total_sleep = passed(start, US);
-		printf("total_sleep =%lu us ==>next_sleep=%lu us\n", total_sleep, next_sleep);
+//		total_sleep = passed(start, US);
+//		printf("total_sleep =%lu us ==>next_sleep=%lu us\n", total_sleep, next_sleep);
 		i++;
 	}
 	total_sleep = passed(start, US);
@@ -85,7 +83,7 @@ void	sleep_now(t_msecs ms)
 
 	printf("\n====>CHANGE<====\n\n");
 	start = set_start_time();
-	usleep(30000);
+	usleep(ms*1000);
 	total_sleep = passed(start, US);
 	printf("plain_old_usleep = %lu us\n\n", total_sleep);
 }
@@ -93,17 +91,15 @@ void	sleep_now(t_msecs ms)
 void	*philo_thread(void *arg)
 {
 	t_philo		*philo;
-	static int	id;
 	size_t 		us_since_start;
 
 	philo = arg;
 	us_since_start = passed(philo->settings->start_time, US);
 	pthread_mutex_lock(&philo->mutex->id);
-	id++;
-//	printf("This is from thread %d ====>", id);
-//	printf("Started after %zu us\n", us_since_start);
-	printf("This is from PhiloID(%d) ====>Started after %zu us\n", philo->id, us_since_start);
-	pthread_mutex_unlock(&philo->mutex->id);
+	printf("This is from thread %d ====>", philo->id);
+	printf("Started after %zu us\n", us_since_start);
+//	printf("This is from PhiloID(%d) ====>Started after %zu us\n", philo->id, us_since_start);
+//	pthread_mutex_unlock(&philo->mutex->id);
 //	printf("Started after %zu ms\n", passed(info->start_time, MS));
 //	printf("Started after %zu s\n", passed(info->start_time, S));
 	return NULL;
@@ -196,8 +192,7 @@ int	main(int argc, char **argv)
 		return (2);
 	init_struct(&info);
 	printf("ph_num=%d, die=%ld, eat=%ld, sleep=%ld, max_eat=%d\n", info.settings.num_philos, info.settings.die_time, info.settings.eat_time, info.settings.sleep_time, info.settings.max_eat);
-	sleep_now(30);
-	start_philos(&info);
+	sleep_now(300);
 
 //	int i = 20;
 //	while (i > 0)
@@ -207,7 +202,9 @@ int	main(int argc, char **argv)
 //		printf("Passed time: %lu ms\n", nu);
 //		i--;
 //	}
-	join_philos(&info);
+
+//	start_philos(&info);
+//	join_philos(&info);
 	destroy_mutexes(info.settings.num_philos, &info.mutex);
 	return 0;
 }

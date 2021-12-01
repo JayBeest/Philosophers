@@ -6,14 +6,12 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:49 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/11/30 03:35:18 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/01 00:13:29 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
-
-# define MAX_THREADS 512
 
 # include <pthread.h>
 
@@ -67,10 +65,11 @@ typedef struct s_mutex
 
 typedef struct s_philo
 {
-	pthread_t	thread;
-	int			id;
-	t_settings	*settings;
-	t_mutex		*mutex;
+	t_settings		*settings;
+	t_mutex			*mutex;
+	pthread_t		thread;
+	int				id;
+	t_time_stamp	last_eaten;
 }			t_philo;
 
 typedef struct s_info

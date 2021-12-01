@@ -6,14 +6,12 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:05:11 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/11/30 02:05:11 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/11/30 22:30:09 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philosopher.h>
 #include <utils.h>
-
-#include <stdlib.h>
 
 static t_bool	is_int(char *str)
 {
