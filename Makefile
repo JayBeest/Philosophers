@@ -13,8 +13,10 @@
 NAME = 		philosopher
 NO_BONUS =	philosopher.c
 DO_BONUS =
-SHARED =	utils.c \
-			parser.c
+SHARED =	parser.c \
+			init.c \
+			timing.c \
+			utils.c
 
 ifdef BONUS
 SRC = $(DO_BONUS) $(SHARED)

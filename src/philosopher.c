@@ -15,32 +15,13 @@
 #include <sys/time.h>
 #include <philosopher.h>
 #include <parser.h>
+#include <init.h>
+#include <timing.h>
 #include <utils.h>
 
 #include <sys/errno.h>
 
-t_time_stamp	set_start_time(void)
-{
-	t_time_stamp	time_stamp;
-	struct timeval	current;
 
-	gettimeofday(&current, NULL);
-	time_stamp.sec = current.tv_sec;
-	time_stamp.usec = current.tv_usec;
-	return (time_stamp);
-}
-
-long	passed(t_time_stamp start, t_time_unit time_unit)
-{
-	struct timeval	current;
-
-	gettimeofday(&current, NULL);
-	if (time_unit == S)
-		return ((current.tv_sec - start.sec) * 1 + (current.tv_usec - start.usec) / 1000000);
-	else if (time_unit == MS)
-		return ((current.tv_sec - start.sec) * 1000 + (current.tv_usec - start.usec) / 1000);
-	return ((current.tv_sec - start.sec) * 1000000 + (current.tv_usec - start.usec));
-}
 
 void	destroy_mutexes(int num_philos, t_mutex *mutex)
 {
@@ -57,36 +38,7 @@ void	destroy_mutexes(int num_philos, t_mutex *mutex)
 		printf("mutex_destroy FAIL (dead) -->errno=%d\n", errno);
 }
 
-void	sleep_now(t_msecs ms)
-{
-	t_time_stamp	start;
-	t_usecs			total_sleep;
-	t_usecs			next_sleep;
-	int				i;
 
-	i = 1;
-	next_sleep = 1000;
-	ms *= 1;
-	start = set_start_time();
-	while (i <= ms)
-	{	
-		usleep(next_sleep);
-		next_sleep += 1000 * i - passed(start, US) + 128;
-		if (next_sleep < 0)
-			next_sleep = 0;
-//		total_sleep = passed(start, US);
-//		printf("total_sleep =%lu us ==>next_sleep=%lu us\n", total_sleep, next_sleep);
-		i++;
-	}
-	total_sleep = passed(start, US);
-	printf("total sleep = %lu\n", total_sleep);
-
-	printf("\n====>CHANGE<====\n\n");
-	start = set_start_time();
-	usleep(ms*1000);
-	total_sleep = passed(start, US);
-	printf("plain_old_usleep = %lu us\n\n", total_sleep);
-}
 
 void	*philo_thread(void *arg)
 {
@@ -98,6 +50,7 @@ void	*philo_thread(void *arg)
 	pthread_mutex_lock(&philo->mutex->id);
 	printf("This is from thread %d ====>", philo->id);
 	printf("Started after %zu us\n", us_since_start);
+	pthread_mutex_unlock(&philo->mutex->id);
 //	printf("This is from PhiloID(%d) ====>Started after %zu us\n", philo->id, us_since_start);
 //	pthread_mutex_unlock(&philo->mutex->id);
 //	printf("Started after %zu ms\n", passed(info->start_time, MS));
@@ -131,56 +84,6 @@ void	join_philos(t_info *info)
 	}
 }
 
-t_bool	init_mutexes(int num_philos, t_mutex *mutex)
-{
-	int	i;
-
-	i = 0;
-	while (i < num_philos)
-	{
-		if (pthread_mutex_init(&mutex->fork[i], NULL) != 0)
-			return (FALSE);
-		i++;
-	}
-	if (pthread_mutex_init(&mutex->dead, NULL) != 0)
-		return (FALSE);
-	return (TRUE);
-}
-
- t_err	init_philos(t_info *info)
- {
-	int	i;
-
-	i = 0;
-	while (i < info->settings.num_philos)
-	{
-		info->philo[i].id = i + 1;
-		info->philo[i].settings = &info->settings;
-		info->philo[i].mutex = &info->mutex;
-		i++;
-	}
-	return (NO_ERROR);
- }
-
-t_err	init_struct(t_info *info)
-{
-	int	num_ph;
-
-	num_ph = info->settings.num_philos;
-	info->philo = (t_philo *)malloc(num_ph * sizeof(t_philo));
-	if (!info->philo)
-		return (MALLOC_FAIL);
-	ft_bzero(info->philo, num_ph * sizeof(t_philo));
-	info->mutex.fork = (pthread_mutex_t *)malloc(num_ph * sizeof(pthread_mutex_t));
-	if (!info->mutex.fork)
-		return (MALLOC_FAIL);
-	ft_bzero(info->mutex.fork, num_ph * sizeof(pthread_mutex_t));
-	init_mutexes(info->settings.num_philos, &info->mutex);
-	init_philos(info);
-	info->settings.start_time = set_start_time();
-	return (NO_ERROR);
-}
-
 int	main(int argc, char **argv)
 {
 	t_info	info;
@@ -190,21 +93,12 @@ int	main(int argc, char **argv)
 	ft_bzero(&info, sizeof(info));
 	if (parse_input(argc, argv, &info.settings) == FALSE)
 		return (2);
-	init_struct(&info);
 	printf("ph_num=%d, die=%ld, eat=%ld, sleep=%ld, max_eat=%d\n", info.settings.num_philos, info.settings.die_time, info.settings.eat_time, info.settings.sleep_time, info.settings.max_eat);
-	sleep_now(300);
-
-//	int i = 20;
-//	while (i > 0)
-//	{
-//		usleep(500000);
-//		size_t nu = ms_passed(info.start_time);
-//		printf("Passed time: %lu ms\n", nu);
-//		i--;
-//	}
-
-//	start_philos(&info);
-//	join_philos(&info);
+	sleep_now(30);
+ 
+	init_struct(&info);
+	start_philos(&info);
+	join_philos(&info);
 	destroy_mutexes(info.settings.num_philos, &info.mutex);
 	return 0;
 }
