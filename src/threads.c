@@ -48,7 +48,7 @@ void	*monitor_thread(void *arg)
 	info = (t_info*)arg;
 	while (info->settings.died == 0)
 	{
-		usleep(500);
+		usleep(INTERVAL);
 		pthread_mutex_lock(&info->mutex.dead);
 		info->settings.died = check_death_timer(*info);
 		pthread_mutex_unlock(&info->mutex.dead);
