@@ -72,9 +72,9 @@ void	*monitor_thread(void *arg)
 		pthread_mutex_lock(&info->mutex.full);
 		if (info->settings.done_eating == info->settings.num_philos)
 		{
-			pthread_mutex_lock(&info->mutex.dead);
-			info->settings.died = 1;
-			pthread_mutex_unlock(&info->mutex.dead);
+			// pthread_mutex_lock(&info->mutex.dead);
+			// info->settings.died = 1;
+			// pthread_mutex_unlock(&info->mutex.dead);
 			pthread_mutex_unlock(&info->mutex.full);
 			return (NULL);
 		}

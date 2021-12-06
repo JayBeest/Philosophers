@@ -85,7 +85,6 @@ typedef struct s_philo
 	int				id;
 	int				times_eaten;
 	t_time_stamp	last_eaten;
-	t_time_stamp	last_action;
 }			t_philo;
 
 typedef struct s_info
