@@ -38,6 +38,10 @@ void	destroy_mutexes(int num_philos, t_mutex *mutex)
 	}
 	if (pthread_mutex_destroy(&mutex->dead) != 0)
 		printf("mutex_destroy FAIL (dead) -->errno=%d\n", errno);
+	if (pthread_mutex_destroy(&mutex->id) != 0)
+		printf("mutex_destroy FAIL (id) -->errno=%d\n", errno);
+	if (pthread_mutex_destroy(&mutex->talk) != 0)
+		printf("mutex_destroy FAIL (talk) -->errno=%d\n", errno);
 }
 
 void	start_philos(t_info *info)
@@ -46,8 +50,6 @@ void	start_philos(t_info *info)
 
 	i = 0;
 	info->settings.start_time = set_start_time();
-	if (pthread_create(&info->monitor, NULL, &monitor_thread, info) != 0)
-		printf("Monitor_thread_create FAIL!! -->errno=%d\n", errno);
 	while (i < info->settings.num_philos)
 	{
 		info->philo[i].last_eaten = info->settings.start_time;
@@ -55,6 +57,8 @@ void	start_philos(t_info *info)
 			printf("Thread_create FAIL (philo[%d]) -->errno=%d\n", i, errno);
 		i++;
 	}
+	if (pthread_create(&info->monitor, NULL, &monitor_thread, info) != 0)
+		printf("Monitor_thread_create FAIL!! -->errno=%d\n", errno);
 }
 
 void	join_philos(t_info *info)
@@ -68,6 +72,9 @@ void	join_philos(t_info *info)
 			printf("Thread_join FAIL (philo[%d]) -->errno=%d\n", i, errno);
 		i++;
 	}
+	if (pthread_join(info->monitor, NULL) != 0)
+			printf("Thread_join FAIL (monitor) -->errno=%d\n", errno);
+
 }
 
 int	main(int argc, char **argv)

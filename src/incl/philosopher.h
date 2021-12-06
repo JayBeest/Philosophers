@@ -41,7 +41,8 @@ typedef enum e_message
 	EAT,
 	SLEEP,
 	THINK,
-	FORK
+	FORK,
+	DIE
 }			t_message;
 
 typedef struct s_time_stamp
@@ -65,7 +66,7 @@ typedef struct s_settings
 	t_msecs			sleep_time;
 	int				max_eat;
 	t_time_stamp	start_time;
-	t_bool			died;
+	int				died;
 }			t_settings;
 
 typedef struct s_mutex

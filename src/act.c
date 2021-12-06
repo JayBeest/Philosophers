@@ -5,22 +5,27 @@ void	talk_now(t_philo philo, t_message msg)
 {
 	t_msecs	time;
 
-	pthread_mutex_lock(&philo.mutex->talk);
 	time = passed(philo.settings->start_time, MS);
-	if (msg == FORK)
+	pthread_mutex_lock(&philo.mutex->talk);
+	pthread_mutex_lock(&philo.mutex->dead);
+	if (msg == FORK && philo.settings->died == 0)
 		printf("%lu Philosopher %d has taken a fork\n", time, philo.id);
-	else if (msg == EAT)
+	else if (msg == EAT && philo.settings->died == 0)
 		printf("%lu Philosopher %d is eating (x%d)\n", time, philo.id, philo.times_eaten + 1);
-	else if (msg == SLEEP)
+	else if (msg == SLEEP && philo.settings->died == 0)
 		printf("%lu Philosopher %d is sleeping\n", time, philo.id);
-	else if (msg == THINK)
+	else if (msg == THINK && philo.settings->died == 0)
 		printf("%lu Philosopher %d is thinking\n", time, philo.id);
+	else if (msg == DIE)
+		printf("%lu Philosopher %d died\n", time, philo.settings->died);
+	pthread_mutex_unlock(&philo.mutex->dead);
 	pthread_mutex_unlock(&philo.mutex->talk);
 }
 
 void	eat_now(t_philo *philo)
 {
 	// check died?
+
 	philo->last_eaten = set_start_time();
 	philo->last_action = philo->last_eaten;
 	talk_now(*philo, EAT);
@@ -32,6 +37,7 @@ void	eat_now(t_philo *philo)
 void	sleep_now(t_philo *philo)
 {
 	// check died?
+
 	philo->last_action = set_start_time();
 	talk_now(*philo, SLEEP);
 	custom_sleep(philo->settings->sleep_time);
@@ -40,6 +46,7 @@ void	sleep_now(t_philo *philo)
 void	think_now(t_philo *philo)
 {
 	// check died?
+
 	philo->last_action = set_start_time();
 	talk_now(*philo, THINK);
 }
@@ -47,6 +54,7 @@ void	think_now(t_philo *philo)
 void	grab_forks(t_philo *philo)
 {
 	// check died?
+
 	if (philo->id % 2)
 	{
 		pthread_mutex_lock(philo->left_fork);

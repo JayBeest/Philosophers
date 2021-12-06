@@ -1,4 +1,5 @@
 #include <philosopher.h>
+#include <timing.h>
 #include <act.h>
 
 void	*philo_thread(void *arg)
@@ -23,14 +24,33 @@ void	*philo_thread(void *arg)
 	return (NULL);
 }
 
+int	check_death_timer(t_info info)
+{
+	int	i;
+
+	i = 0;
+	while (i < info.settings.num_philos)
+	{
+		if (passed(info.philo[i].last_eaten, MS) > info.settings.die_time)
+		{
+			return (i + 1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	*monitor_thread(void *arg)
 {
 	t_info	*info;
 
 	info = (t_info*)arg;
-	while (info->settings->died == FALSE)
+	while (info->settings.died == 0)
 	{
-		info->settings->died = check_death_timer()
+		pthread_mutex_lock(&info->mutex.dead);
+		info->settings.died = check_death_timer(*info);
+		pthread_mutex_unlock(&info->mutex.dead);
 	}
+	talk_now(*info->philo, DIE);
 	return (NULL);
 }
