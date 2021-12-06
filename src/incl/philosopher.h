@@ -68,6 +68,8 @@ typedef struct s_philo
 	t_settings		*settings;
 	t_mutex			*mutex;
 	pthread_t		thread;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
 	int				id;
 	t_time_stamp	last_eaten;
 }			t_philo;

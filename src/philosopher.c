@@ -38,7 +38,24 @@ void	destroy_mutexes(int num_philos, t_mutex *mutex)
 		printf("mutex_destroy FAIL (dead) -->errno=%d\n", errno);
 }
 
+void	grab_forks(t_philo *philo)
+{
+	if (philo->id % 2)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		printf("Philo%d picked up L-fork (forkID=%p)\n", philo->id, philo->left_fork);
+		pthread_mutex_lock(philo->right_fork);
+		printf("Philo%d picked up R-fork (forkID=%p)\n", philo->id, philo->right_fork);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->right_fork);
+		printf("Philo%d picked up R-fork (forkID=%p)\n", philo->id, philo->right_fork);
+		pthread_mutex_lock(philo->left_fork);
+		printf("Philo%d picked up L-fork (forkID=%p)\n", philo->id, philo->left_fork);
+	}
 
+}
 
 void	*philo_thread(void *arg)
 {
@@ -48,13 +65,11 @@ void	*philo_thread(void *arg)
 	philo = arg;
 	us_since_start = passed(philo->settings->start_time, US);
 	pthread_mutex_lock(&philo->mutex->id);
-	printf("This is from thread %d ====>", philo->id);
-	printf("Started after %zu us\n", us_since_start);
+	// printf("This is from thread %d ====>", philo->id);
+	// printf("Started after %zu us\n", us_since_start);
 	pthread_mutex_unlock(&philo->mutex->id);
-//	printf("This is from PhiloID(%d) ====>Started after %zu us\n", philo->id, us_since_start);
-//	pthread_mutex_unlock(&philo->mutex->id);
-//	printf("Started after %zu ms\n", passed(info->start_time, MS));
-//	printf("Started after %zu s\n", passed(info->start_time, S));
+	grab_forks(philo);
+
 	return NULL;
 }
 

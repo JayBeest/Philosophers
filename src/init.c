@@ -32,6 +32,16 @@ static t_bool	init_mutexes(int num_philos, t_mutex *mutex)
 		info->philo[i].id = i + 1;
 		info->philo[i].settings = &info->settings;
 		info->philo[i].mutex = &info->mutex;
+		if (i == 0)
+		{
+			info->philo[i].right_fork = &info->mutex.fork[info->settings.num_philos - 1];
+			info->philo[i].left_fork = &info->mutex.fork[i];
+		}
+		else
+		{
+			info->philo[i].right_fork = &info->mutex.fork[i - 1];
+			info->philo[i].left_fork = &info->mutex.fork[i];
+		}
 		i++;
 	}
 	return (NO_ERROR);
