@@ -16,6 +16,8 @@ DO_BONUS =
 SHARED =	parser.c \
 			init.c \
 			timing.c \
+			threads.c \
+			act.c \
 			utils.c
 
 ifdef BONUS

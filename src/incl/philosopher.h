@@ -78,6 +78,7 @@ typedef struct s_info
 {
 	t_mutex			mutex;
 	t_settings		settings;
+	pthread_t		monitor;
 
 	t_philo			*philo;
 }			t_info;

@@ -62,6 +62,5 @@ t_err	init_struct(t_info *info)
 	ft_bzero(info->mutex.fork, num_ph * sizeof(pthread_mutex_t));
 	init_mutexes(info->settings.num_philos, &info->mutex);
 	init_philos(info);
-	info->settings.start_time = set_start_time();
 	return (NO_ERROR);
 }

@@ -25,7 +25,7 @@ long	passed(t_time_stamp start, t_time_unit time_unit)
 	return ((current.tv_sec - start.sec) + (current.tv_usec - start.usec) / 1000000);
 }
 
-void	sleep_now(t_msecs ms)
+void	custom_sleep(t_msecs ms)
 {
 	t_time_stamp	start;
 

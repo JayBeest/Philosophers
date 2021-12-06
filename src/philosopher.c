@@ -17,7 +17,9 @@
 #include <parser.h>
 #include <init.h>
 #include <timing.h>
+#include <threads.h>
 #include <utils.h>
+#include <act.h>
 
 #include <sys/errno.h>
 
@@ -38,48 +40,17 @@ void	destroy_mutexes(int num_philos, t_mutex *mutex)
 		printf("mutex_destroy FAIL (dead) -->errno=%d\n", errno);
 }
 
-void	grab_forks(t_philo *philo)
-{
-	if (philo->id % 2)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		printf("Philo%d picked up L-fork (forkID=%p)\n", philo->id, philo->left_fork);
-		pthread_mutex_lock(philo->right_fork);
-		printf("Philo%d picked up R-fork (forkID=%p)\n", philo->id, philo->right_fork);
-	}
-	else
-	{
-		pthread_mutex_lock(philo->right_fork);
-		printf("Philo%d picked up R-fork (forkID=%p)\n", philo->id, philo->right_fork);
-		pthread_mutex_lock(philo->left_fork);
-		printf("Philo%d picked up L-fork (forkID=%p)\n", philo->id, philo->left_fork);
-	}
-
-}
-
-void	*philo_thread(void *arg)
-{
-	t_philo		*philo;
-	size_t 		us_since_start;
-
-	philo = arg;
-	us_since_start = passed(philo->settings->start_time, US);
-	pthread_mutex_lock(&philo->mutex->id);
-	// printf("This is from thread %d ====>", philo->id);
-	// printf("Started after %zu us\n", us_since_start);
-	pthread_mutex_unlock(&philo->mutex->id);
-	grab_forks(philo);
-
-	return NULL;
-}
-
 void	start_philos(t_info *info)
 {
 	int	i;
 
 	i = 0;
+	info->settings.start_time = set_start_time();
+	if (pthread_create(&info->monitor, NULL, &monitor_thread, info) != 0)
+		printf("Monitor_thread_create FAIL!! -->errno=%d\n", errno);
 	while (i < info->settings.num_philos)
 	{
+		info->philo[i].last_eaten = info->settings.start_time;
 		if (pthread_create(&info->philo[i].thread, NULL, &philo_thread, &info->philo[i]) != 0)
 			printf("Thread_create FAIL (philo[%d]) -->errno=%d\n", i, errno);
 		i++;
@@ -109,7 +80,7 @@ int	main(int argc, char **argv)
 	if (parse_input(argc, argv, &info.settings) == FALSE)
 		return (2);
 	printf("ph_num=%d, die=%ld, eat=%ld, sleep=%ld, max_eat=%d\n", info.settings.num_philos, info.settings.die_time, info.settings.eat_time, info.settings.sleep_time, info.settings.max_eat);
-	sleep_now(30);
+	custom_sleep(30);
  
 	init_struct(&info);
 	start_philos(&info);
