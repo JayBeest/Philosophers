@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:55:43 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/06 20:55:43 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/06 23:59:20 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,5 @@ void	custom_sleep(t_msecs ms)
 
 	start = set_start_time();
 	while (ms - passed(start, MS) > 0)
-		usleep(100);
+		usleep(INTERVAL);
 }

@@ -6,10 +6,11 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:55:36 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/06 20:55:36 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 00:11:09 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <pthread.h>
 #include <unistd.h>
 #include <philosopher.h>
 #include <timing.h>
@@ -35,9 +36,18 @@ void	*philo_thread(void *arg)
 	philo = (t_philo *)arg;
 	while (philo->settings->max_eat == 0 || !is_full(*philo))
 	{
+		pthread_mutex_lock(&philo->mutex->dead);
+		if (philo->settings->died)
+		{
+			pthread_mutex_unlock(&philo->mutex->dead);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&philo->mutex->dead);
 		grab_forks(philo);
 		eat_now(philo);
+		pthread_mutex_lock(&philo->mutex->full);
 		philo->times_eaten++;
+		pthread_mutex_unlock(&philo->mutex->full);
 		sleep_now(philo);
 		think_now(philo);
 	}
@@ -72,9 +82,6 @@ void	*monitor_thread(void *arg)
 		pthread_mutex_lock(&info->mutex.full);
 		if (info->settings.done_eating == info->settings.num_philos)
 		{
-			// pthread_mutex_lock(&info->mutex.dead);
-			// info->settings.died = 1;
-			// pthread_mutex_unlock(&info->mutex.dead);
 			pthread_mutex_unlock(&info->mutex.full);
 			return (NULL);
 		}

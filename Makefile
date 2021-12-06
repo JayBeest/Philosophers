@@ -6,11 +6,10 @@
 #   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        #
 #                                                +#+#+#+#+#+   +#+           #
 #   Created: 2021/11/30 02:05:25 by jcorneli          #+#    #+#             #
-#   Updated: 2021/11/30 02:05:25 by jcorneli         ###   ########.fr       #
-#                                                                            #
+#   Updated: 202#   Updated: 2021/12/07 00:11:26 by jcorneli         ###   ########.fr       #                                                              #
 # ************************************************************************** #
 
-NAME = 		philosopher
+NAME = 		philo
 NO_BONUS =	philosopher.c
 DO_BONUS =
 SHARED =	parser.c \
@@ -29,7 +28,7 @@ endif
 SRC_DIR =	src
 OBJ_DIR	= 	$(SRC_DIR)/obj
 INCL = 		-I$(SRC_DIR)/incl
-C_FLAGS = 	-Wall -Wextra -Werror -fsanitize=thread
+C_FLAGS = 	-Wall -Wextra -Werror #-fsanitize=thread
 
 OBJ = 		$(SRC:%.c=$(OBJ_DIR)/%.o)
 

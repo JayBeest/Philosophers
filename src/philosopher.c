@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/time.h>
 #include <philosopher.h>
 #include <parser.h>
 #include <init.h>
