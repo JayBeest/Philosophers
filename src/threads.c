@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <philosopher.h>
 #include <timing.h>
 #include <act.h>
@@ -31,7 +32,7 @@ int	check_death_timer(t_info info)
 	i = 0;
 	while (i < info.settings.num_philos)
 	{
-		if (passed(info.philo[i].last_eaten, MS) > info.settings.die_time)
+		if ((info.settings.max_eat == 0 || info.philo[i].times_eaten < info.settings.max_eat) && passed(info.philo[i].last_eaten, MS) > info.settings.die_time)
 		{
 			return (i + 1);
 		}
@@ -47,6 +48,7 @@ void	*monitor_thread(void *arg)
 	info = (t_info*)arg;
 	while (info->settings.died == 0)
 	{
+		usleep(500);
 		pthread_mutex_lock(&info->mutex.dead);
 		info->settings.died = check_death_timer(*info);
 		pthread_mutex_unlock(&info->mutex.dead);
