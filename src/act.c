@@ -24,8 +24,6 @@ void	talk_now(t_philo philo, t_message msg)
 
 void	eat_now(t_philo *philo)
 {
-	// check died?
-
 	philo->last_eaten = set_start_time();
 	philo->last_action = philo->last_eaten;
 	talk_now(*philo, EAT);
@@ -36,8 +34,6 @@ void	eat_now(t_philo *philo)
 
 void	sleep_now(t_philo *philo)
 {
-	// check died?
-
 	philo->last_action = set_start_time();
 	talk_now(*philo, SLEEP);
 	custom_sleep(philo->settings->sleep_time);
@@ -45,16 +41,12 @@ void	sleep_now(t_philo *philo)
 
 void	think_now(t_philo *philo)
 {
-	// check died?
-
 	philo->last_action = set_start_time();
 	talk_now(*philo, THINK);
 }
 
 void	grab_forks(t_philo *philo)
 {
-	// check died?
-
 	if (philo->id % 2)
 	{
 		pthread_mutex_lock(philo->left_fork);

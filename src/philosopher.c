@@ -86,9 +86,6 @@ int	main(int argc, char **argv)
 	ft_bzero(&info, sizeof(info));
 	if (parse_input(argc, argv, &info.settings) == FALSE)
 		return (2);
-	printf("ph_num=%d, die=%ld, eat=%ld, sleep=%ld, max_eat=%d\n", info.settings.num_philos, info.settings.die_time, info.settings.eat_time, info.settings.sleep_time, info.settings.max_eat);
-	custom_sleep(30);
- 
 	init_struct(&info);
 	start_philos(&info);
 	join_philos(&info);
