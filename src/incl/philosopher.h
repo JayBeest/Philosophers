@@ -15,7 +15,10 @@
 
 # include <pthread.h>
 
+
 #include <stdio.h>
+
+# define INTERVAL 250
 
 typedef long t_secs;
 typedef long t_msecs;
@@ -32,6 +35,14 @@ typedef enum e_err
 	NO_ERROR,
 	MALLOC_FAIL
 }			t_err;
+
+typedef enum e_message
+{
+	EAT,
+	SLEEP,
+	THINK,
+	FORK
+}			t_message;
 
 typedef struct s_time_stamp
 {
@@ -54,6 +65,7 @@ typedef struct s_settings
 	t_msecs			sleep_time;
 	int				max_eat;
 	t_time_stamp	start_time;
+	t_bool			died;
 }			t_settings;
 
 typedef struct s_mutex
@@ -61,6 +73,7 @@ typedef struct s_mutex
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	dead;
 	pthread_mutex_t	id;
+	pthread_mutex_t	talk;
 }			t_mutex;
 
 typedef struct s_philo
@@ -71,7 +84,9 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	int				id;
+	int				times_eaten;
 	t_time_stamp	last_eaten;
+	t_time_stamp	last_action;
 }			t_philo;
 
 typedef struct s_info
