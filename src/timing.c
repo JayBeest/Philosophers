@@ -31,10 +31,13 @@ long	passed(t_time_stamp start, t_time_unit time_unit)
 
 	gettimeofday(&current, NULL);
 	if (time_unit == US)
-		return ((current.tv_sec - start.sec) * 1000000 + (current.tv_usec - start.usec) );
+		return ((current.tv_sec - start.sec) * 1000000 + \
+			(current.tv_usec - start.usec));
 	else if (time_unit == MS)
-		return ((current.tv_sec - start.sec) * 1000 + (current.tv_usec - start.usec) / 1000);
-	return ((current.tv_sec - start.sec) + (current.tv_usec - start.usec) / 1000000);
+		return ((current.tv_sec - start.sec) * 1000 + \
+			(current.tv_usec - start.usec) / 1000);
+	return ((current.tv_sec - start.sec) + \
+		(current.tv_usec - start.usec) / 1000000);
 }
 
 void	custom_sleep(t_msecs ms)

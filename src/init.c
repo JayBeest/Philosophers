@@ -35,8 +35,8 @@ static t_bool	init_mutexes(int num_philos, t_mutex *mutex)
 	return (TRUE);
 }
 
- static t_err	init_philos(t_info *info)
- {
+static t_err	init_philos(t_info *info)
+{
 	int	i;
 
 	i = 0;
@@ -47,7 +47,8 @@ static t_bool	init_mutexes(int num_philos, t_mutex *mutex)
 		info->philo[i].mutex = &info->mutex;
 		if (i == 0)
 		{
-			info->philo[i].right_fork = &info->mutex.fork[info->settings.num_philos - 1];
+			info->philo[i].right_fork = \
+				&info->mutex.fork[info->settings.num_philos - 1];
 			info->philo[i].left_fork = &info->mutex.fork[i];
 		}
 		else
@@ -58,7 +59,7 @@ static t_bool	init_mutexes(int num_philos, t_mutex *mutex)
 		i++;
 	}
 	return (NO_ERROR);
- }
+}
 
 t_err	init_struct(t_info *info)
 {
@@ -69,7 +70,8 @@ t_err	init_struct(t_info *info)
 	if (!info->philo)
 		return (MALLOC_FAIL);
 	ft_bzero(info->philo, num_ph * sizeof(t_philo));
-	info->mutex.fork = (pthread_mutex_t *)malloc(num_ph * sizeof(pthread_mutex_t));
+	info->mutex.fork = (pthread_mutex_t *)malloc(num_ph * \
+		sizeof(pthread_mutex_t));
 	if (!info->mutex.fork)
 		return (MALLOC_FAIL);
 	ft_bzero(info->mutex.fork, num_ph * sizeof(pthread_mutex_t));

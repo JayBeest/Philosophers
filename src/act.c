@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <philosopher.h>
 #include <timing.h>
 
@@ -23,7 +24,8 @@ void	talk_now(t_philo philo, t_message msg)
 	if (msg == FORK && philo.settings->died == 0)
 		printf("%lu Philosopher %d has taken a fork\n", time, philo.id);
 	else if (msg == EAT && philo.settings->died == 0)
-		printf("%lu Philosopher %d is eating (x%d)\n", time, philo.id, philo.times_eaten + 1);
+		printf("%lu Philosopher %d is eating (x%d)\n", time, philo.id, \
+			philo.times_eaten + 1);
 	else if (msg == SLEEP && philo.settings->died == 0)
 		printf("%lu Philosopher %d is sleeping\n", time, philo.id);
 	else if (msg == THINK && philo.settings->died == 0)
@@ -78,4 +80,3 @@ void	grab_forks(t_philo *philo)
 		talk_now(*philo, FORK);
 	}
 }
-

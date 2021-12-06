@@ -15,14 +15,11 @@
 
 # include <pthread.h>
 
-
-#include <stdio.h>
-
 # define INTERVAL 250
 
-typedef long t_secs;
-typedef long t_msecs;
-typedef long t_usecs;
+typedef long	t_secs;
+typedef long	t_msecs;
+typedef long	t_usecs;
 
 typedef enum e_bool
 {
@@ -66,6 +63,7 @@ typedef struct s_settings
 	t_msecs			sleep_time;
 	int				max_eat;
 	t_time_stamp	start_time;
+	int				done_eating;
 	int				died;
 }			t_settings;
 
@@ -73,7 +71,7 @@ typedef struct s_mutex
 {
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	dead;
-	pthread_mutex_t	id;
+	pthread_mutex_t	full;
 	pthread_mutex_t	talk;
 }			t_mutex;
 

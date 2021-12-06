@@ -19,6 +19,7 @@
 #include <utils.h>
 
 #include <sys/errno.h>
+#include <stdio.h>
 
 void	destroy_mutexes(int num_philos, t_mutex *mutex)
 {
@@ -48,7 +49,8 @@ void	start_philos(t_info *info)
 	while (i < info->settings.num_philos)
 	{
 		info->philo[i].last_eaten = info->settings.start_time;
-		if (pthread_create(&info->philo[i].thread, NULL, &philo_thread, &info->philo[i]) != 0)
+		if (pthread_create(&info->philo[i].thread, NULL, &philo_thread, \
+			&info->philo[i]) != 0)
 			printf("Thread_create FAIL (philo[%d]) -->errno=%d\n", i, errno);
 		i++;
 	}
@@ -68,8 +70,7 @@ void	join_philos(t_info *info)
 		i++;
 	}
 	if (pthread_join(info->monitor, NULL) != 0)
-			printf("Thread_join FAIL (monitor) -->errno=%d\n", errno);
-
+		printf("Thread_join FAIL (monitor) -->errno=%d\n", errno);
 }
 
 int	main(int argc, char **argv)
@@ -85,5 +86,5 @@ int	main(int argc, char **argv)
 	start_philos(&info);
 	join_philos(&info);
 	destroy_mutexes(info.settings.num_philos, &info.mutex);
-	return 0;
+	return (0);
 }
