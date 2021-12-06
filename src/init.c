@@ -28,7 +28,7 @@ static t_bool	init_mutexes(int num_philos, t_mutex *mutex)
 	}
 	if (pthread_mutex_init(&mutex->dead, NULL) != 0)
 		return (FALSE);
-	if (pthread_mutex_init(&mutex->id, NULL) != 0)
+	if (pthread_mutex_init(&mutex->full, NULL) != 0)
 		return (FALSE);
 	if (pthread_mutex_init(&mutex->talk, NULL) != 0)
 		return (FALSE);

@@ -34,10 +34,10 @@ void	destroy_mutexes(int num_philos, t_mutex *mutex)
 	}
 	if (pthread_mutex_destroy(&mutex->dead) != 0)
 		printf("mutex_destroy FAIL (dead) -->errno=%d\n", errno);
-	if (pthread_mutex_destroy(&mutex->id) != 0)
-		printf("mutex_destroy FAIL (id) -->errno=%d\n", errno);
 	if (pthread_mutex_destroy(&mutex->talk) != 0)
 		printf("mutex_destroy FAIL (talk) -->errno=%d\n", errno);
+	if (pthread_mutex_destroy(&mutex->full) != 0)
+		printf("mutex_destroy FAIL (full) -->errno=%d\n", errno);
 }
 
 void	start_philos(t_info *info)
