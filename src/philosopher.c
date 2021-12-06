@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
 #include <sys/time.h>
 #include <philosopher.h>
 #include <parser.h>
@@ -19,11 +17,8 @@
 #include <timing.h>
 #include <threads.h>
 #include <utils.h>
-#include <act.h>
 
 #include <sys/errno.h>
-
-
 
 void	destroy_mutexes(int num_philos, t_mutex *mutex)
 {
