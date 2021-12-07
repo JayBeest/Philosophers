@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:55:36 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 00:11:09 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 01:53:02 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 #include <timing.h>
 #include <act.h>
 
-t_bool	is_full(t_philo philo)
+#include <stdio.h>
+
+t_bool	is_full(t_philo philo, t_bool only_checking)
 {
 	pthread_mutex_lock(&philo.mutex->full);
 	if (philo.times_eaten != philo.settings->max_eat)
@@ -24,7 +26,8 @@ t_bool	is_full(t_philo philo)
 		pthread_mutex_unlock(&philo.mutex->full);
 		return (FALSE);
 	}
-	philo.settings->done_eating++;
+	if (!only_checking)
+		philo.settings->done_eating++;
 	pthread_mutex_unlock(&philo.mutex->full);
 	return (TRUE);
 }
@@ -34,7 +37,7 @@ void	*philo_thread(void *arg)
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
-	while (philo->settings->max_eat == 0 || !is_full(*philo))
+	while (philo->settings->max_eat == 0 || !is_full(*philo, FALSE))
 	{
 		pthread_mutex_lock(&philo->mutex->dead);
 		if (philo->settings->died)
@@ -45,9 +48,6 @@ void	*philo_thread(void *arg)
 		pthread_mutex_unlock(&philo->mutex->dead);
 		grab_forks(philo);
 		eat_now(philo);
-		pthread_mutex_lock(&philo->mutex->full);
-		philo->times_eaten++;
-		pthread_mutex_unlock(&philo->mutex->full);
 		sleep_now(philo);
 		think_now(philo);
 	}
@@ -61,11 +61,9 @@ int	check_death_timer(t_info info)
 	i = 0;
 	while (i < info.settings.num_philos)
 	{
-		if ((info.settings.max_eat == 0 || !is_full(info.philo[i])) && \
-			passed(info.philo[i].last_eaten, MS) > info.settings.die_time)
-		{
+		if (info.settings.max_eat == 0 || (!is_full(info.philo[i], TRUE) \
+			&& passed(info.philo[i].last_eaten, MS) > info.settings.die_time))
 			return (i + 1);
-		}
 		i++;
 	}
 	return (0);

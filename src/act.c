@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:54:40 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/06 20:54:40 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 01:11:30 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ void	talk_now(t_philo philo, t_message msg)
 	if (msg == FORK && philo.settings->died == 0)
 		printf("%lu Philosopher %d has taken a fork\n", time, philo.id);
 	else if (msg == EAT && philo.settings->died == 0)
-		printf("%lu Philosopher %d is eating (x%d)\n", time, philo.id, \
-			philo.times_eaten + 1);
+		printf("%lu Philosopher %d is eating\n", time, philo.id);
 	else if (msg == SLEEP && philo.settings->died == 0)
 		printf("%lu Philosopher %d is sleeping\n", time, philo.id);
 	else if (msg == THINK && philo.settings->died == 0)
@@ -37,12 +36,21 @@ void	talk_now(t_philo philo, t_message msg)
 void	eat_now(t_philo *philo)
 {
 	philo->last_eaten = set_start_time();
+	philo->times_eaten++;
 	pthread_mutex_lock(&philo->mutex->talk);
 	talk_now(*philo, EAT);
 	pthread_mutex_unlock(&philo->mutex->talk);
 	custom_sleep(philo->settings->eat_time);
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
+	if (philo->id % 2)
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}
 }
 
 void	sleep_now(t_philo *philo)
