@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:55:36 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 01:53:02 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 02:08:28 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int	check_death_timer(t_info info)
 	i = 0;
 	while (i < info.settings.num_philos)
 	{
-		if (info.settings.max_eat == 0 || (!is_full(info.philo[i], TRUE) \
-			&& passed(info.philo[i].last_eaten, MS) > info.settings.die_time))
+		if (!is_full(info.philos[i], TRUE)	&& \
+			passed(info.philos[i].last_eaten, MS) > info.settings.die_time)
 			return (i + 1);
 		i++;
 	}
@@ -88,6 +88,6 @@ void	*monitor_thread(void *arg)
 		info->settings.died = check_death_timer(*info);
 		pthread_mutex_unlock(&info->mutex.dead);
 	}
-	talk_now(*info->philo, DIE);
+	talk_now(*info->philos, DIE);
 	return (NULL);
 }

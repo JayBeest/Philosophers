@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:49 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/06 23:55:04 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 02:01:43 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_settings
 
 typedef struct s_mutex
 {
-	pthread_mutex_t	*fork;
+	pthread_mutex_t	*forks;
 	pthread_mutex_t	dead;
 	pthread_mutex_t	full;
 	pthread_mutex_t	talk;
@@ -77,14 +77,14 @@ typedef struct s_mutex
 
 typedef struct s_philo
 {
-	t_settings		*settings;
-	t_mutex			*mutex;
 	pthread_t		thread;
+	int				id;
+	t_time_stamp	last_eaten;
+	int				times_eaten;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	int				id;
-	int				times_eaten;
-	t_time_stamp	last_eaten;
+	t_settings		*settings;
+	t_mutex			*mutex;
 }			t_philo;
 
 typedef struct s_info
@@ -92,8 +92,7 @@ typedef struct s_info
 	t_mutex			mutex;
 	t_settings		settings;
 	pthread_t		monitor;
-
-	t_philo			*philo;
+	t_philo			*philos;
 }			t_info;
 
 #endif

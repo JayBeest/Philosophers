@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:44 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/11/30 23:59:26 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 02:02:04 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	destroy_mutexes(int num_philos, t_mutex *mutex)
 	i = 0;
 	while (i < num_philos)
 	{
-		if (pthread_mutex_destroy(&mutex->fork[i]) != 0)
+		if (pthread_mutex_destroy(&mutex->forks[i]) != 0)
 			printf("mutex_destroy FAIL (fork[%d]) -->errno=%d\n", i, errno);
 		i++;
 	}
@@ -47,10 +47,10 @@ void	start_philos(t_info *info)
 	info->settings.start_time = set_start_time();
 	while (i < info->settings.num_philos)
 	{
-		info->philo[i].last_eaten = info->settings.start_time;
-		if (pthread_create(&info->philo[i].thread, NULL, &philo_thread, \
-			&info->philo[i]) != 0)
-			printf("Thread_create FAIL (philo[%d]) -->errno=%d\n", i, errno);
+		info->philos[i].last_eaten = info->settings.start_time;
+		if (pthread_create(&info->philos[i].thread, NULL, &philo_thread, \
+			&info->philos[i]) != 0)
+			printf("Thread_create FAIL (philos[%d]) -->errno=%d\n", i, errno);
 		i++;
 	}
 	if (pthread_create(&info->monitor, NULL, &monitor_thread, info) != 0)
@@ -64,8 +64,8 @@ void	join_philos(t_info *info)
 	i = 0;
 	while (i < info->settings.num_philos)
 	{
-		if (pthread_join(info->philo[i].thread, NULL) != 0)
-			printf("Thread_join FAIL (philo[%d]) -->errno=%d\n", i, errno);
+		if (pthread_join(info->philos[i].thread, NULL) != 0)
+			printf("Thread_join FAIL (philos[%d]) -->errno=%d\n", i, errno);
 		i++;
 	}
 	if (pthread_join(info->monitor, NULL) != 0)
