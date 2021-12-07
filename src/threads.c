@@ -14,9 +14,22 @@
 #include <unistd.h>
 #include <philosopher.h>
 #include <timing.h>
+#include <talk.h>
 #include <act.h>
 
 #include <stdio.h>
+
+t_bool	noone_died(t_philo philo)
+{
+	pthread_mutex_lock(&philo.mutex->dead);
+	if (philo.settings->died)
+	{
+		pthread_mutex_unlock(&philo.mutex->dead);
+		return (FALSE);
+	}
+	pthread_mutex_unlock(&philo.mutex->dead);
+	return (TRUE);
+}
 
 t_bool	is_full(t_philo philo, t_bool only_checking)
 {
@@ -37,20 +50,17 @@ void	*philo_thread(void *arg)
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
-	while (philo->settings->max_eat == 0 || !is_full(*philo, FALSE))
+	while ((philo->settings->max_eat == 0 || !is_full(*philo, FALSE)) && noone_died(*philo))
 	{
-		pthread_mutex_lock(&philo->mutex->dead);
-		if (philo->settings->died)
-		{
-			pthread_mutex_unlock(&philo->mutex->dead);
-			return (NULL);
-		}
-		pthread_mutex_unlock(&philo->mutex->dead);
 		grab_forks(philo);
-		eat_now(philo);
-		sleep_now(philo);
-		think_now(philo);
+		if (noone_died(*philo))
+			eat_now(philo);
+		if (noone_died(*philo))
+			sleep_now(philo);
+		if (noone_died(*philo))
+			talk_now(*philo, THINK);
 	}
+	drop_forks(*philo);
 	return (NULL);
 }
 

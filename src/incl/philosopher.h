@@ -38,7 +38,8 @@ typedef enum e_message
 	EAT,
 	SLEEP,
 	THINK,
-	FORK,
+	L_FORK,
+	R_FORK,
 	DIE
 }			t_message;
 

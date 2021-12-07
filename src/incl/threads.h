@@ -13,6 +13,7 @@
 #ifndef THREADS_H
 # define THREADS_H
 
+t_bool	noone_died(t_philo philo);
 void	*philo_thread(void *arg);
 void	*monitor_thread(void *arg);
 
