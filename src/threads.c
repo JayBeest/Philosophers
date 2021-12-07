@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:55:36 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 02:08:28 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 02:14:51 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	check_death_timer(t_info info)
 	i = 0;
 	while (i < info.settings.num_philos)
 	{
-		if (!is_full(info.philos[i], TRUE)	&& \
+		if (!is_full(info.philos[i], TRUE) && \
 			passed(info.philos[i].last_eaten, MS) > info.settings.die_time)
 			return (i + 1);
 		i++;
