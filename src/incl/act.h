@@ -15,8 +15,8 @@
 
 void	eat_now(t_philo *philo);
 void	sleep_now(t_philo *philo);
-void	think_now(t_philo *philo);
 void	grab_forks(t_philo *philo);
 void	drop_forks(t_philo philo);
+void	talk_now(t_philo philo, t_message msg);
 
 #endif

@@ -50,7 +50,8 @@ void	*philo_thread(void *arg)
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
-	while ((philo->settings->max_eat == 0 || !is_full(*philo, FALSE)) && noone_died(*philo))
+	while ((philo->settings->max_eat == 0 || !is_full(*philo, FALSE)) && \
+		noone_died(*philo))
 	{
 		grab_forks(philo);
 		if (noone_died(*philo))
