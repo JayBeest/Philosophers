@@ -1,7 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   talk.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/07 14:25:04 by jcorneli          #+#    #+#             */
+/*   Updated: 2021/12/07 14:25:29 by jcorneli         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <philosopher.h>
-#include <threads.h>
-#include <timing.h>
 #include <talk.h>
 
 void	say_l_fork(t_philo philo, t_msecs time)

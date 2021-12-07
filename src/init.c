@@ -6,13 +6,13 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:54:48 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 02:06:26 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 02:30:07 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <philosopher.h>
 #include <pthread.h>
+#include <philosopher.h>
 #include <utils.h>
 
 static t_bool	init_mutexes(int num_philos, t_mutex *mutex)

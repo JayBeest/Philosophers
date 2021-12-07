@@ -6,11 +6,10 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:54:40 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 02:31:31 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 14:28:26 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <philosopher.h>
 #include <threads.h>
 #include <timing.h>
@@ -40,7 +39,7 @@ void	talk_now(t_philo philo, t_message msg)
 
 void	eat_now(t_philo *philo)
 {
-	philo->last_eaten = set_start_time();
+	philo->last_eaten = set_time();
 	philo->times_eaten++;
 	talk_now(*philo, EAT);
 	custom_sleep(philo->settings->eat_time);

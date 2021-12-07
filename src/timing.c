@@ -10,11 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/time.h>
 #include <unistd.h>
 #include <philosopher.h>
-#include <sys/time.h>
 
-t_time_stamp	set_start_time(void)
+t_time_stamp	set_time(void)
 {
 	t_time_stamp	time_stamp;
 	struct timeval	current;
@@ -44,7 +44,7 @@ void	custom_sleep(t_msecs ms)
 {
 	t_time_stamp	start;
 
-	start = set_start_time();
+	start = set_time();
 	while (ms - passed(start, MS) > 0)
 		usleep(INTERVAL);
 }

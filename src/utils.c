@@ -29,7 +29,7 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-int	ft_isspace(int c)
+static int	ft_isspace(int c)
 {
 	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' \
 		|| c == '\r')

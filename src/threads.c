@@ -14,7 +14,6 @@
 #include <unistd.h>
 #include <philosopher.h>
 #include <timing.h>
-#include <talk.h>
 #include <act.h>
 
 #include <stdio.h>

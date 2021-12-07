@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:44 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 02:06:26 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 02:30:07 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	start_philos(t_info *info)
 	int	i;
 
 	i = 0;
-	info->settings.start_time = set_start_time();
+	info->settings.start_time = set_time();
 	while (i < info->settings.num_philos)
 	{
 		info->philos[i].last_eaten = info->settings.start_time;
