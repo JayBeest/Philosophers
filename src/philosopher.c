@@ -6,10 +6,11 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:44 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 02:02:04 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 02:06:26 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <philosopher.h>
 #include <parser.h>
 #include <init.h>
@@ -81,9 +82,12 @@ int	main(int argc, char **argv)
 	ft_bzero(&info, sizeof(info));
 	if (parse_input(argc, argv, &info.settings) == FALSE)
 		return (2);
-	init_struct(&info);
+	if (init_struct(&info) == MALLOC_FAIL)
+		return (3);
 	start_philos(&info);
 	join_philos(&info);
 	destroy_mutexes(info.settings.num_philos, &info.mutex);
+	free(info.philos);
+	free(info.mutex.forks);
 	return (0);
 }

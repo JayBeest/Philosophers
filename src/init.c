@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:54:48 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 02:03:00 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/07 02:06:26 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ t_err	init_struct(t_info *info)
 	info->mutex.forks = (pthread_mutex_t *)malloc(num_ph * \
 		sizeof(pthread_mutex_t));
 	if (!info->mutex.forks)
+	{
+		free(info->philos);
 		return (MALLOC_FAIL);
+	}
 	ft_bzero(info->mutex.forks, num_ph * sizeof(pthread_mutex_t));
 	init_mutexes(info->settings.num_philos, &info->mutex);
 	init_philos(info);
