@@ -21,7 +21,14 @@
 #include <sys/errno.h>
 #include <stdio.h>
 
-void	destroy_mutexes(int num_philos, t_mutex *mutex)
+int	free_stuff(t_info info, int return_value)
+{
+	free(info.philos);
+	free(info.mutex.forks);
+	return (return_value);
+}
+
+int	destroy_mutexes(int num_philos, t_mutex *mutex)
 {
 	int	i;
 
@@ -29,18 +36,19 @@ void	destroy_mutexes(int num_philos, t_mutex *mutex)
 	while (i < num_philos)
 	{
 		if (pthread_mutex_destroy(&mutex->forks[i]) != 0)
-			printf("mutex_destroy FAIL (fork[%d]) -->errno=%d\n", i, errno);
+			return (printf("mutex_destroy FAIL (fork[%d])\n", i));
 		i++;
 	}
 	if (pthread_mutex_destroy(&mutex->dead) != 0)
-		printf("mutex_destroy FAIL (dead) -->errno=%d\n", errno);
+		return (printf("mutex_destroy FAIL (dead)\n"));
 	if (pthread_mutex_destroy(&mutex->talk) != 0)
-		printf("mutex_destroy FAIL (talk) -->errno=%d\n", errno);
+		return (printf("mutex_destroy FAIL (talk)\n"));
 	if (pthread_mutex_destroy(&mutex->full) != 0)
-		printf("mutex_destroy FAIL (full) -->errno=%d\n", errno);
+		return (printf("mutex_destroy FAIL (full)\n"));
+	return (0);
 }
 
-void	start_philos(t_info *info)
+int	start_philos(t_info *info)
 {
 	int	i;
 
@@ -51,14 +59,15 @@ void	start_philos(t_info *info)
 		info->philos[i].last_eaten = info->settings.start_time;
 		if (pthread_create(&info->philos[i].thread, NULL, &philo_thread, \
 			&info->philos[i]) != 0)
-			printf("Thread_create FAIL (philos[%d]) -->errno=%d\n", i, errno);
+			return (printf("Thread_create FAIL (philo[%d])\n", i));
 		i++;
 	}
 	if (pthread_create(&info->monitor, NULL, &monitor_thread, info) != 0)
-		printf("Monitor_thread_create FAIL!! -->errno=%d\n", errno);
+		return (printf("Thread_create FAIL (monitor)\n"));
+	return (0);
 }
 
-void	join_philos(t_info *info)
+int	join_philos(t_info *info)
 {
 	int	i;
 
@@ -66,11 +75,12 @@ void	join_philos(t_info *info)
 	while (i < info->settings.num_philos)
 	{
 		if (pthread_join(info->philos[i].thread, NULL) != 0)
-			printf("Thread_join FAIL (philos[%d]) -->errno=%d\n", i, errno);
+			return (printf("Thread_join FAIL (philos[%d])\n", i));
 		i++;
 	}
 	if (pthread_join(info->monitor, NULL) != 0)
-		printf("Thread_join FAIL (monitor) -->errno=%d\n", errno);
+		return (printf("Thread_join FAIL (monitor)\n"));
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -84,10 +94,11 @@ int	main(int argc, char **argv)
 		return (2);
 	if (init_struct(&info) == MALLOC_FAIL)
 		return (3);
-	start_philos(&info);
-	join_philos(&info);
-	destroy_mutexes(info.settings.num_philos, &info.mutex);
-	free(info.philos);
-	free(info.mutex.forks);
-	return (0);
+	if (start_philos(&info) != 0)
+		return (free_stuff(info, 4));
+	if (join_philos(&info) != 0)
+		return (free_stuff(info, 5));
+	if (destroy_mutexes(info.settings.num_philos, &info.mutex) != 0)
+		return (free_stuff(info, 6));
+	return (free_stuff(info, 0));
 }
