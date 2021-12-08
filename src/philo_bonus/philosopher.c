@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
 #include <philosopher.h>
 #include <parser.h>
 #include <init.h>
@@ -24,27 +25,16 @@
 int	free_stuff(t_info info, int return_value)
 {
 	free(info.philos);
-	free(info.mutex.forks);
+	// free(info.mutex.forks);
 	return (return_value);
 }
 
-int	destroy_mutexes(int num_philos, t_mutex *mutex)
+int	destroy(t_info *info)
 {
-	int	i;
-
-	i = 0;
-	while (i < num_philos)
-	{
-		if (pthread_mutex_destroy(&mutex->forks[i]) != 0)
-			return (printf("mutex_destroy FAIL (fork[%d])\n", i));
-		i++;
-	}
-	if (pthread_mutex_destroy(&mutex->dead) != 0)
-		return (printf("mutex_destroy FAIL (dead)\n"));
-	if (pthread_mutex_destroy(&mutex->talk) != 0)
-		return (printf("mutex_destroy FAIL (talk)\n"));
-	if (pthread_mutex_destroy(&mutex->full) != 0)
-		return (printf("mutex_destroy FAIL (full)\n"));
+	printf("sem_unlink(forkpile) rv =%d err=%s\n", sem_unlink("forkpile"), strerror(errno));
+	printf("sem_close(forkpile) rv=%d err=%s\n", sem_close(info->forks_sem), strerror(errno));
+	printf("sem_unlink(talk) rv =%d err=%s\n", sem_unlink("talk"), strerror(errno));
+	printf("sem_close(talk) rv=%d err=%s\n", sem_close(info->talk_sem), strerror(errno));
 	return (0);
 }
 
@@ -63,24 +53,27 @@ int	start_philos(t_info *info)
 			return (printf("Fork FAIL (philo[%d])\n", i));
 		else if (id == 0)
 			break ;
+		info->philos[i].pid = id;
 		i++;
 	}
 	if (id == 0)
+	{
 		philo_thread(&info->philos[i]); /// <=======HIERO BEN JE
+		exit (0);
+	}
 	else if (pthread_create(&info->monitor, NULL, &monitor_thread, info) != 0)
 		return (printf("Thread_create FAIL (monitor)\n"));
 	return (0);
 }
   
-int	join_philos(t_info *info)
+int	wait_philos(t_info *info)
 {
 	int	i;
 
 	i = 0;
 	while (i < info->settings.num_philos)
 	{
-		if (pthread_join(info->philos[i].thread, NULL) != 0)
-			return (printf("Thread_join FAIL (philos[%d])\n", i));
+		wait(NULL);
 		i++;
 	}
 	if (pthread_join(info->monitor, NULL) != 0)
@@ -101,9 +94,9 @@ int	main(int argc, char **argv)
 		return (3);
 	if (start_philos(&info) != 0)
 		return (free_stuff(info, 4));
-	if (join_philos(&info) != 0)
+	if (wait_philos(&info) != 0)
 		return (free_stuff(info, 5));
-	if (destroy_mutexes(info.settings.num_philos, &info.mutex) != 0)
+	if (destroy(&info) != 0)
 		return (free_stuff(info, 6));
 	return (free_stuff(info, 0));
 }

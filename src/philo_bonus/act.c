@@ -29,12 +29,13 @@ void	talk_now(t_philo philo, t_message msg)
 	t_msecs				time;
 
 	time = passed(philo.settings->start_time, MS);
-	if (msg == DIE || noone_died(philo))
-	{
-		pthread_mutex_lock(&philo.mutex->talk);
+	// if (msg == DIE)
+	// {
+		// printf("talk_sem_ptr=%p\n", philo.talk_sem);
+		printf(WHITE);
 		fun_ptr[msg](philo, time);
-		pthread_mutex_unlock(&philo.mutex->talk);
-	}
+
+	// }
 }
 
 void	eat_now(t_philo *philo)
@@ -43,16 +44,8 @@ void	eat_now(t_philo *philo)
 	philo->times_eaten++;
 	talk_now(*philo, EAT);
 	custom_sleep(philo->settings->eat_time);
-	if (philo->id % 2)
-	{
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
-	}
-	else
-	{
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(philo->left_fork);
-	}
+	sem_post(philo->forks_sem);
+	sem_post(philo->forks_sem);
 }
 
 void	sleep_now(t_philo *philo)
@@ -63,30 +56,21 @@ void	sleep_now(t_philo *philo)
 
 void	grab_forks(t_philo *philo)
 {
-	if (philo->id % 2)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		talk_now(*philo, L_FORK);
-		pthread_mutex_lock(philo->right_fork);
-		talk_now(*philo, R_FORK);
-	}
-	else
-	{
-		pthread_mutex_lock(philo->right_fork);
-		talk_now(*philo, R_FORK);
-		pthread_mutex_lock(philo->left_fork);
-		talk_now(*philo, L_FORK);
-	}
+	if (sem_wait(philo->forks_sem) == -1)
+		printf("sem_wait fail ---> err=%s\n", strerror(errno));
+	talk_now(*philo, R_FORK);
+	sem_wait(philo->forks_sem);
+	talk_now(*philo, L_FORK);
 }
 
-void	drop_forks(t_philo philo)
-{
-	int	i;
+// void	drop_forks(t_philo philo)
+// {
+// 	int	i;
 
-	i = 0;
-	while (i < philo.settings->num_philos)
-	{
-		pthread_mutex_unlock(&philo.mutex->forks[i]);
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < philo.settings->num_philos)
+// 	{
+// 		pthread_mutex_unlock(&philo.mutex->forks[i]);
+// 		i++;
+// 	}
+// }

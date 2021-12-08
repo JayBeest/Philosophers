@@ -14,6 +14,12 @@
 # define PHILOSOPHER_H
 
 # include <pthread.h>
+# include <semaphore.h>
+
+#include <stdio.h>
+#include <string.h>
+#include <sys/errno.h>
+
 
 # define INTERVAL 250
 
@@ -68,29 +74,21 @@ typedef struct s_settings
 	int				died;
 }			t_settings;
 
-// typedef struct s_semaphores
-// {
-// 	sem_t	*forks;
-// 	// sem_t	dead;
-// 	// sem_t	full;
-// 	// sem_t	talk;
-// }			t_semaphores;
-
 typedef struct s_philo
 {
-	// pthread_t		thread;
 	int				id;
+	int				pid;
 	t_time_stamp	last_eaten;
 	int				times_eaten;
-	// pthread_mutex_t	*left_fork;
-	// pthread_mutex_t	*right_fork;
 	t_settings		*settings;
-	sem_t			*forks;
+	sem_t			*forks_sem;
+	sem_t			*talk_sem;
 }			t_philo;
 
 typedef struct s_info
 {
-	sem_t			forks;
+	sem_t			*forks_sem;
+	sem_t			*talk_sem;
 	t_settings		settings;
 	pthread_t		monitor;
 	t_philo			*philos;

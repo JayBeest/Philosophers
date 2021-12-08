@@ -18,29 +18,29 @@
 
 #include <stdio.h>
 
-t_bool	noone_died(t_philo philo)
-{
-	pthread_mutex_lock(&philo.mutex->dead);
-	if (philo.settings->died)
-	{
-		pthread_mutex_unlock(&philo.mutex->dead);
-		return (FALSE);
-	}
-	pthread_mutex_unlock(&philo.mutex->dead);
-	return (TRUE);
-}
+// t_bool	noone_died(t_philo philo)
+// {
+// 	// pthread_mutex_lock(&philo.mutex->dead);
+// 	if (philo.settings->died)
+// 	{
+// 		// pthread_mutex_unlock(&philo.mutex->dead);
+// 		return (FALSE);
+// 	}
+// 	// pthread_mutex_unlock(&philo.mutex->dead);
+// 	return (TRUE);
+// }
 
 t_bool	is_full(t_philo philo, t_bool only_checking)
 {
-	pthread_mutex_lock(&philo.mutex->full);
+
 	if (philo.times_eaten != philo.settings->max_eat)
 	{
-		pthread_mutex_unlock(&philo.mutex->full);
+
 		return (FALSE);
 	}
 	if (!only_checking)
 		philo.settings->done_eating++;
-	pthread_mutex_unlock(&philo.mutex->full);
+
 	return (TRUE);
 }
 
@@ -49,18 +49,15 @@ void	*philo_thread(void *arg)
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
-	while ((philo->settings->max_eat == 0 || !is_full(*philo, FALSE)) && \
-		noone_died(*philo))
+	philo->last_eaten = set_time();
+	// printf("Hey! this is philo %d with pid=%d with ppid=%d\n", philo->id, getpid(), getppid());
+	while (philo->settings->max_eat == 0 || !is_full(*philo, FALSE))
 	{
 		grab_forks(philo);
-		if (noone_died(*philo))
-			eat_now(philo);
-		if (noone_died(*philo))
-			sleep_now(philo);
-		if (noone_died(*philo))
-			talk_now(*philo, THINK);
+		eat_now(philo);
+		sleep_now(philo);
+		talk_now(*philo, THINK);
 	}
-	drop_forks(*philo);
 	return (NULL);
 }
 
@@ -86,17 +83,16 @@ void	*monitor_thread(void *arg)
 	info = (t_info *)arg;
 	while (info->settings.died == 0)
 	{
-		usleep(INTERVAL);
-		pthread_mutex_lock(&info->mutex.full);
+		usleep(500);
+		printf("Philo[1] since last eaten = %ld\n", passed(info->philos[1].last_eaten, MS));
 		if (info->settings.done_eating == info->settings.num_philos)
 		{
-			pthread_mutex_unlock(&info->mutex.full);
+			printf("ALL DONE EATING!!!!\n");
 			return (NULL);
 		}
-		pthread_mutex_unlock(&info->mutex.full);
-		pthread_mutex_lock(&info->mutex.dead);
 		info->settings.died = check_death_timer(*info);
-		pthread_mutex_unlock(&info->mutex.dead);
+		if (info->settings.died > 0)
+			printf("settings.died == %d\n", info->settings.died);
 	}
 	talk_now(*info->philos, DIE);
 	return (NULL);
