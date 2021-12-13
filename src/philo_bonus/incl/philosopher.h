@@ -21,7 +21,7 @@
 #include <sys/errno.h>
 
 
-# define INTERVAL 250
+# define INTERVAL 500
 
 typedef long	t_secs;
 typedef long	t_msecs;
@@ -63,6 +63,12 @@ typedef enum e_time_unit
 	US
 }			t_time_unit;
 
+typedef struct s_mutex
+{
+	pthread_mutex_t	dead;
+	pthread_mutex_t	full;
+}			t_mutex;
+
 typedef struct s_settings
 {
 	int				num_philos;
@@ -81,18 +87,23 @@ typedef struct s_philo
 	int				pid;
 	int				times_eaten;
 	t_time_stamp	last_eaten;
+	pthread_t		monitor_thread;
 	t_settings		*settings;
+	t_mutex			*mutex;
 	sem_t			*forks_sem;
 	sem_t			*talk_sem;
+	sem_t			*died_sem;
 }			t_philo;
 
 typedef struct s_info
 {
 	sem_t			*forks_sem;
 	sem_t			*talk_sem;
+	sem_t			*died_sem;
 	t_settings		settings;
 	pthread_t		monitor;
 	t_philo			*philos;
+	t_mutex			mutex;
 }			t_info;
 
 #endif

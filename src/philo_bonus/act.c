@@ -44,7 +44,6 @@ void	talk_now(t_philo philo, t_message msg)
 
 void	eat_now(t_philo *philo)
 {
-	kill(getppid(), SIGUSR1);
 	philo->last_eaten = set_time();
 	philo->times_eaten++;
 	talk_now(*philo, EAT);
@@ -64,11 +63,12 @@ void	grab_forks(t_philo *philo)
 	if (philo->times_eaten == 0)
 	{
 		philo->settings->start_time = set_time();
-		custom_sleep(1);
+		philo->last_eaten = philo->settings->start_time;
 	}
 	if (sem_wait(philo->forks_sem) == -1)
 		printf("sem_wait fail ---> err=%s\n", strerror(errno));
 	talk_now(*philo, R_FORK);
-	sem_wait(philo->forks_sem);
+	if (sem_wait(philo->forks_sem) == -1)
+		printf("sem_wait fail ---> err=%s\n", strerror(errno));;
 	talk_now(*philo, L_FORK);
 }

@@ -24,8 +24,6 @@
 #include <sys/errno.h>
 #include <stdio.h>
 
-int	global_pid;
-
 int	free_stuff(t_info info, int return_value)
 {
 	free(info.philos);
@@ -38,8 +36,22 @@ int	destroy(t_info *info)
 	printf("sem_close(forkpile) rv=%d err=%s\n", sem_close(info->forks_sem), strerror(errno));
 	printf("sem_unlink(talk) rv =%d err=%s\n", sem_unlink("talk"), strerror(errno));
 	printf("sem_close(talk) rv=%d err=%s\n", sem_close(info->talk_sem), strerror(errno));
+	printf("sem_unlink(died) rv =%d err=%s\n", sem_unlink("died"), strerror(errno));
+	printf("sem_close(died) rv=%d err=%s\n", sem_close(info->died_sem), strerror(errno));
 	return (0);
 }
+
+// int	destroy_mutexes(int num_philos, t_mutex *mutex)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (pthread_mutex_destroy(&mutex->dead) != 0)
+// 		return (printf("mutex_destroy FAIL (dead)\n"));
+// 	if (pthread_mutex_destroy(&mutex->full) != 0)
+// 		return (printf("mutex_destroy FAIL (full)\n"));
+// 	return (0);
+// }
 
 int	spawn_philos(t_info *info)
 {
@@ -61,9 +73,10 @@ int	spawn_philos(t_info *info)
 		info->philos[i].pid = id;
 		i++;
 	}
+	start_sim(info);
 	info->settings.start_time = set_time();
-	if (pthread_create(&info->monitor, NULL, &monitor_thread, info) != 0)
-		return (printf("Thread_create FAIL (monitor)\n"));
+	// if (pthread_create(&info->monitor, NULL, &monitor_thread, info) != 0)
+	// 	return (printf("Thread_create FAIL (monitor)\n"));
 	return (0);
 }
   
@@ -77,8 +90,8 @@ int	wait_philos(t_info *info)
 		wait(NULL);
 		i++;
 	}
-	if (pthread_join(info->monitor, NULL) != 0)
-		return (printf("Thread_join FAIL (monitor)\n"));
+	// if (pthread_join(info->monitor, NULL) != 0)
+	// 	return (printf("Thread_join FAIL (monitor)\n"));
 	return (0);
 }
 

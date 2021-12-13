@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <philosopher.h>
-#include "incl/handlers.h"
+#include <handlers.h>
 #include <utils.h>
 
 static t_err	init_philos(t_info *info)
@@ -25,8 +25,10 @@ static t_err	init_philos(t_info *info)
 	{
 		info->philos[i].id = i + 1;
 		info->philos[i].settings = &info->settings;
+		info->philos[i].mutex = &info->mutex;
 		info->philos[i].forks_sem = info->forks_sem;
 		info->philos[i].talk_sem = info->talk_sem;
+		info->philos[i].died_sem = info->died_sem;
 		i++;
 	}
 	return (NO_ERROR);
@@ -41,10 +43,12 @@ t_err	init_struct(t_info *info)
 	if (!info->philos)
 		return (MALLOC_FAIL);
 	ft_bzero(info->philos, num_ph * sizeof(t_philo));
-	 sem_unlink("talk");
-	 sem_unlink("forkpile");
-	info->forks_sem = sem_open("forkpile", O_CREAT | O_EXCL, 0644, 8);
+	//  sem_unlink("talk");
+	//  sem_unlink("died");
+	//  sem_unlink("forkpile");
+	info->forks_sem = sem_open("forkpile", O_CREAT | O_EXCL, 0644, 0);
 	info->talk_sem = sem_open("talk", O_CREAT | O_EXCL, 0644, 1);
+	info->died_sem = sem_open("died", O_CREAT | O_EXCL, 0644, 1);
 	if (errno != 0)
 	{
 		printf("THIS IS THE SEM_OPEN errno: %d msg: %s\n", errno, strerror(errno));

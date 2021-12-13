@@ -17,6 +17,16 @@
 #include <act.h>
 #include <child.h>
 
+t_bool	is_full(t_philo philo)
+{
+	if (philo.settings->max_eat == 0)
+		return (FALSE);
+	else if (philo.times_eaten != philo.settings->max_eat)
+		return (FALSE);
+	// printf("IS FULL (id%d); times_eaten=%d max_eat=%d\n", philo.id, philo.times_eaten, philo.settings->max_eat);
+	return (TRUE);
+}
+
 void	kill_philos(t_info info)
 {
 	int i;
@@ -29,60 +39,56 @@ void	kill_philos(t_info info)
 	}
 }
 
-
-
-int	check_death_timer(t_info info)
-{
-	int	i;
-
-	i = 0;
-	while (i < info.settings.num_philos)
-	{
-		if (!is_full(info.philos[i], TRUE) && \
-			passed(info.philos[i].last_eaten, MS) > info.settings.die_time)
-			return (i + 1);
-		i++;
-	}
-	return (0);
-}
-
 void	start_sim(t_info *info)
 {
 	int	i;
 
 	i = 0;
-	info->settings.start_time = set_time();
 	while (i < info->settings.num_philos)
 	{
-		info->philos[i].last_eaten = info->settings.start_time;
 		if (sem_post(info->forks_sem) != 0)
 			printf("start_sim SEMPOST FAIL\n");
 		kill(info->philos[i].pid, SIGCONT);
-		usleep(133);
+		// usleep(1330);
 		i++;
 	}
+}
 
+int	check_death_timer(t_philo philo)
+{
+	if (passed(philo.last_eaten, MS) > philo.settings->die_time)
+	{
+		sem_post(philo.died_sem);
+		sem_post(philo.died_sem);
+		return (1);
+	}
+	return (0);
 }
 
 void	*monitor_thread(void *arg)
 {
-	t_info	*info;
+	t_philo	*philo;
 
-	info = (t_info *)arg;
-
-	start_sim(info);
-	while (info->settings.died == 0)
+	philo = (t_philo *)arg;
+	while (philo->settings->died == 0)
 	{
-		usleep(500);
-		if (info->settings.done_eating == info->settings.num_philos)
+		usleep(INTERVAL);
+		if (is_full(*philo))
 		{
-			printf("ALL DONE EATING!!!!\n");
-			return (NULL);
+			return (NULL); // <<<------==== set full semaphore + cleanup!!!!!
 		}
-		info->settings.died = check_death_timer(*info);
+		// pthread_mutex_lock(&philo->mutex->full);
+		// if (philo->settings->done_eating == philo->settings->num_philos)
+		// {
+		// 	pthread_mutex_unlock(&philo->mutex->full);
+		// 	return (NULL);
+		// }
+		// pthread_mutex_unlock(&philo->mutex->full);
+		pthread_mutex_lock(&philo->mutex->dead);
+		philo->settings->died = check_death_timer(*philo);
+		// printf("PASSED(ID=%d)=%lu\n", philo->id, passed(philo->last_eaten, MS));
+		pthread_mutex_unlock(&philo->mutex->dead);
 	}
-	kill_philos(*info);
-	talk_now(*info->philos, DIE);
+	talk_now(*philo, DIE);
 	return (NULL);
 }
-
