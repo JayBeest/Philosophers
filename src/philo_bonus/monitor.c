@@ -23,7 +23,6 @@ t_bool	is_full(t_philo philo)
 		return (FALSE);
 	else if (philo.times_eaten != philo.settings->max_eat)
 		return (FALSE);
-	// printf("IS FULL (id%d); times_eaten=%d max_eat=%d\n", philo.id, philo.times_eaten, philo.settings->max_eat);
 	return (TRUE);
 }
 
@@ -49,7 +48,7 @@ void	start_sim(t_info *info)
 		if (sem_post(info->forks_sem) != 0)
 			printf("start_sim SEMPOST FAIL\n");
 		kill(info->philos[i].pid, SIGCONT);
-		// usleep(1330);
+		usleep(133);
 		i++;
 	}
 }
@@ -65,7 +64,7 @@ int	check_death_timer(t_philo philo)
 	return (0);
 }
 
-void	*monitor_thread(void *arg)
+void	*child_monitor_thread(void *arg)
 {
 	t_philo	*philo;
 
@@ -73,20 +72,12 @@ void	*monitor_thread(void *arg)
 	while (philo->settings->died == 0)
 	{
 		usleep(INTERVAL);
-		if (is_full(*philo))
+		if (is_full(*philo) || someone_died(*philo))
 		{
 			return (NULL); // <<<------==== set full semaphore + cleanup!!!!!
 		}
-		// pthread_mutex_lock(&philo->mutex->full);
-		// if (philo->settings->done_eating == philo->settings->num_philos)
-		// {
-		// 	pthread_mutex_unlock(&philo->mutex->full);
-		// 	return (NULL);
-		// }
-		// pthread_mutex_unlock(&philo->mutex->full);
 		pthread_mutex_lock(&philo->mutex->dead);
 		philo->settings->died = check_death_timer(*philo);
-		// printf("PASSED(ID=%d)=%lu\n", philo->id, passed(philo->last_eaten, MS));
 		pthread_mutex_unlock(&philo->mutex->dead);
 	}
 	talk_now(*philo, DIE);

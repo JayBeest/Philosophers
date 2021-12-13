@@ -16,6 +16,9 @@
 #include <timing.h>
 #include <talk.h>
 #include <talk2.h>
+
+#include <child.h>
+
 #include <signal.h>
 
 void	talk_now(t_philo philo, t_message msg)
@@ -31,13 +34,11 @@ void	talk_now(t_philo philo, t_message msg)
 	t_msecs				time;
 
 	time = passed(philo.settings->start_time, MS);
-	// if (msg == DIE)
-	// {
-		// printf("talk_sem_ptr=%p\n", philo.talk_sem);
-		printf(WHITE);
+	printf(WHITE);
+	sem_wait(philo.talk_sem);
+	if (!someone_died(philo) || msg == DIE)
 		fun_ptr[msg](philo, time);
-
-	// }
+	sem_post(philo.talk_sem);
 }
 
 
@@ -60,15 +61,17 @@ void	sleep_now(t_philo *philo)
 
 void	grab_forks(t_philo *philo)
 {
-	if (philo->times_eaten == 0)
-	{
-		philo->settings->start_time = set_time();
-		philo->last_eaten = philo->settings->start_time;
-	}
+	// if (philo->times_eaten == 0)
+	// {
+	// 	philo->settings->start_time = set_time();
+	// 	philo->last_eaten = philo->settings->start_time;
+	// }
+	pthread_mutex_lock(&philo->mutex->dead);
 	if (sem_wait(philo->forks_sem) == -1)
 		printf("sem_wait fail ---> err=%s\n", strerror(errno));
 	talk_now(*philo, R_FORK);
 	if (sem_wait(philo->forks_sem) == -1)
 		printf("sem_wait fail ---> err=%s\n", strerror(errno));;
 	talk_now(*philo, L_FORK);
+	pthread_mutex_unlock(&philo->mutex->dead);
 }

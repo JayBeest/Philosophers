@@ -46,9 +46,9 @@ t_err	init_struct(t_info *info)
 	//  sem_unlink("talk");
 	//  sem_unlink("died");
 	//  sem_unlink("forkpile");
-	info->forks_sem = sem_open("forkpile", O_CREAT | O_EXCL, 0644, 0);
-	info->talk_sem = sem_open("talk", O_CREAT | O_EXCL, 0644, 1);
-	info->died_sem = sem_open("died", O_CREAT | O_EXCL, 0644, 1);
+	info->forks_sem = sem_open("forkpile", O_CREAT, 0644, 0);
+	info->talk_sem = sem_open("talk", O_CREAT, 0644, 1);
+	info->died_sem = sem_open("died", O_CREAT, 0644, 0);
 	if (errno != 0)
 	{
 		printf("THIS IS THE SEM_OPEN errno: %d msg: %s\n", errno, strerror(errno));

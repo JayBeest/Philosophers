@@ -37,6 +37,8 @@ typedef enum e_err
 {
 	NO_ERROR,
 	SIGACT_FAIL,
+	THR_JOIN_FAIL,
+	SEM_FAIL,
 	MALLOC_FAIL
 }			t_err;
 
