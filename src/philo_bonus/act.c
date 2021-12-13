@@ -6,20 +6,16 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:54:40 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/10 17:47:56 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/13 20:07:12 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include <stdio.h>
 #include <philosopher.h>
-#include <threads.h>
 #include <timing.h>
+#include <child.h>
 #include <talk.h>
 #include <talk2.h>
-
-#include <child.h>
-
-#include <signal.h>
 
 void	talk_now(t_philo philo, t_message msg)
 {
@@ -41,8 +37,6 @@ void	talk_now(t_philo philo, t_message msg)
 	sem_post(philo.talk_sem);
 }
 
-
-
 void	eat_now(t_philo *philo)
 {
 	philo->last_eaten = set_time();
@@ -61,17 +55,12 @@ void	sleep_now(t_philo *philo)
 
 void	grab_forks(t_philo *philo)
 {
-	// if (philo->times_eaten == 0)
-	// {
-	// 	philo->settings->start_time = set_time();
-	// 	philo->last_eaten = philo->settings->start_time;
-	// }
 	pthread_mutex_lock(&philo->mutex->dead);
 	if (sem_wait(philo->forks_sem) == -1)
-		printf("sem_wait fail ---> err=%s\n", strerror(errno));
+		printf("sem_wait fail ---> philo_id=%d\n", philo->id);
 	talk_now(*philo, R_FORK);
 	if (sem_wait(philo->forks_sem) == -1)
-		printf("sem_wait fail ---> err=%s\n", strerror(errno));;
+		printf("sem_wait fail ---> philo_id=%d\n", philo->id);
 	talk_now(*philo, L_FORK);
 	pthread_mutex_unlock(&philo->mutex->dead);
 }

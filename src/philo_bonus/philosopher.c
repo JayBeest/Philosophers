@@ -6,10 +6,11 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:44 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/08 23:30:02 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/13 20:20:07 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
@@ -19,10 +20,8 @@
 #include <timing.h>
 #include <monitor.h>
 #include <child.h>
+#include <talk2.h>
 #include <utils.h>
-
-#include <sys/errno.h>
-#include <stdio.h>
 
 int	free_stuff(t_info info, int return_value)
 {
@@ -32,26 +31,14 @@ int	free_stuff(t_info info, int return_value)
 
 int	destroy(t_info *info)
 {
-	printf("sem_unlink(forkpile) rv =%d err=%s\n", sem_unlink("forkpile"), strerror(errno));
-	printf("sem_close(forkpile) rv=%d err=%s\n", sem_close(info->forks_sem), strerror(errno));
-	printf("sem_unlink(talk) rv =%d err=%s\n", sem_unlink("talk"), strerror(errno));
-	printf("sem_close(talk) rv=%d err=%s\n", sem_close(info->talk_sem), strerror(errno));
-	printf("sem_unlink(died) rv =%d err=%s\n", sem_unlink("died"), strerror(errno));
-	printf("sem_close(died) rv=%d err=%s\n", sem_close(info->died_sem), strerror(errno));
+	sem_unlink("forkpile");
+	sem_close(info->forks_sem);
+	sem_unlink("talk");
+	sem_close(info->talk_sem);
+	sem_unlink("died");
+	sem_close(info->died_sem);
 	return (0);
 }
-
-// int	destroy_mutexes(int num_philos, t_mutex *mutex)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (pthread_mutex_destroy(&mutex->dead) != 0)
-// 		return (printf("mutex_destroy FAIL (dead)\n"));
-// 	if (pthread_mutex_destroy(&mutex->full) != 0)
-// 		return (printf("mutex_destroy FAIL (full)\n"));
-// 	return (0);
-// }
 
 int	spawn_philos(t_info *info)
 {
@@ -66,7 +53,7 @@ int	spawn_philos(t_info *info)
 			return (printf("Fork FAIL (philo[%d])\n", i));
 		else if (id == 0)
 		{
-			philo_child(&info->philos[i]); /// <=======HIERO BEN JE
+			philo_child(&info->philos[i]);
 			exit (0);
 		}
 		kill(id, SIGSTOP);
@@ -75,11 +62,9 @@ int	spawn_philos(t_info *info)
 	}
 	start_sim(info);
 	info->settings.start_time = set_time();
-	// if (pthread_create(&info->monitor, NULL, &monitor_thread, info) != 0)
-	// 	return (printf("Thread_create FAIL (monitor)\n"));
 	return (0);
 }
-  
+
 int	wait_philos(t_info *info)
 {
 	int	i;
@@ -87,11 +72,9 @@ int	wait_philos(t_info *info)
 	i = 0;
 	while (i < info->settings.num_philos)
 	{
-		wait(NULL);
+		waitpid(0, NULL, 0);
 		i++;
 	}
-	// if (pthread_join(info->monitor, NULL) != 0)
-	// 	return (printf("Thread_join FAIL (monitor)\n"));
 	return (0);
 }
 
@@ -104,15 +87,15 @@ int	main(int argc, char **argv)
 	ft_bzero(&info, sizeof(info));
 	if (parse_input(argc, argv, &info.settings) == FALSE)
 		return (2);
+	if (info.settings.num_philos == 1)
+		return (return_single_philo());
 	if (init_struct(&info) == MALLOC_FAIL)
 		return (3);
-	if (init_signals() != 0)
-		return (free_stuff(info, 4));
 	if (spawn_philos(&info) != 0)
-		return (free_stuff(info, 5));
+		return (free_stuff(info, 4));
 	if (wait_philos(&info) != 0)
-		return (free_stuff(info, 6));
+		return (free_stuff(info, 5));
 	if (destroy(&info) != 0)
-		return (free_stuff(info, 7));
+		return (free_stuff(info, 6));
 	return (free_stuff(info, 0));
 }

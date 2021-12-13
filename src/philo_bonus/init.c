@@ -1,19 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:05:11 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/10 17:43:20 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/13 20:02:06 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <signal.h>
 #include <philosopher.h>
-#include <handlers.h>
 #include <utils.h>
 
 static t_err	init_philos(t_info *info)
@@ -43,33 +41,9 @@ t_err	init_struct(t_info *info)
 	if (!info->philos)
 		return (MALLOC_FAIL);
 	ft_bzero(info->philos, num_ph * sizeof(t_philo));
-	//  sem_unlink("talk");
-	//  sem_unlink("died");
-	//  sem_unlink("forkpile");
 	info->forks_sem = sem_open("forkpile", O_CREAT, 0644, 0);
 	info->talk_sem = sem_open("talk", O_CREAT, 0644, 1);
 	info->died_sem = sem_open("died", O_CREAT, 0644, 0);
-	if (errno != 0)
-	{
-		printf("THIS IS THE SEM_OPEN errno: %d msg: %s\n", errno, strerror(errno));
-		return (MALLOC_FAIL);
-	}
 	init_philos(info);
-	return (NO_ERROR);
-}
-
-t_err	init_signals(void)
-{
-	struct sigaction	eat;
-	struct sigaction	full;
-
-	eat.sa_handler = &handle_eat;
-	full.sa_handler = &handle_full;
-	eat.sa_flags = 0;
-	full.sa_flags = 0;
-	if (sigaction(SIGUSR1, &eat, NULL) != 0)
-		return (SIGACT_FAIL);
-	if (sigaction(SIGUSR2, &full, NULL) != 0)
-		return (SIGACT_FAIL);
 	return (NO_ERROR);
 }

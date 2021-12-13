@@ -6,11 +6,12 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 22:25:06 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/12 13:55:50 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/13 20:08:40 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdio.h>
 #include <signal.h>
 #include <philosopher.h>
 #include <timing.h>
@@ -28,7 +29,7 @@ t_bool	is_full(t_philo philo)
 
 void	kill_philos(t_info info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info.settings.num_philos)
@@ -74,7 +75,7 @@ void	*child_monitor_thread(void *arg)
 		usleep(INTERVAL);
 		if (is_full(*philo) || someone_died(*philo))
 		{
-			return (NULL); // <<<------==== set full semaphore + cleanup!!!!!
+			return (NULL);
 		}
 		pthread_mutex_lock(&philo->mutex->dead);
 		philo->settings->died = check_death_timer(*philo);

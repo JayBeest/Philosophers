@@ -16,11 +16,6 @@
 # include <pthread.h>
 # include <semaphore.h>
 
-#include <stdio.h>
-#include <string.h>
-#include <sys/errno.h>
-
-
 # define INTERVAL 500
 
 typedef long	t_secs;

@@ -14,5 +14,6 @@
 # define TALK2_H
 
 void	say_die(t_philo philo, t_msecs time);
+int		return_single_philo(void);
 
 #endif
