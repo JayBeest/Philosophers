@@ -6,29 +6,35 @@
 #   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        #
 #                                                +#+#+#+#+#+   +#+           #
 #   Created: 2021/11/30 02:05:25 by jcorneli          #+#    #+#             #
-#   Updated: 202#   Updated: 2021/12/07 02:30:31 by jcorneli         ###   ########.fr       #                                                              #
+#   Updated: 202#   Updated: 2021/12/09 00:22:21 by jcorneli         ###   ########.fr       #                                                              #
 # ************************************************************************** #
 
 NAME = 	philo
-SRC =	philosopher.c \
-		parser.c \
-		init.c \
-		timing.c \
-		threads.c \
-		act.c \
-		talk.c \
-		talk2.c \
-		utils.c
+SRC_NO_BONUS =	philosopher.c \
+				parser.c \
+				init.c \
+				timing.c \
+				threads.c \
+				act.c \
+				talk.c \
+				talk2.c \
+				utils.c
+
+SRC_BONUS =		monitor.c \
+				child.c \
+				handlers.c \
 
 ifdef BONUS
 SRC_DIR = src/philo_bonus
+SRC = $(SRC_NO_BONUS) $(SRC_BONUS)
 else
 SRC_DIR = src/philo
+SRC = $(SRC_NO_BONUS)
 endif
 
 OBJ_DIR	= 	$(SRC_DIR)/obj
 INCL = 		-I$(SRC_DIR)/incl
-C_FLAGS = 	-Wall -Wextra -Werror -fsanitize=thread
+C_FLAGS = 	-Wall -Wextra -Werror #-fsanitize=thread
 
 OBJ = 		$(SRC:%.c=$(OBJ_DIR)/%.o)
 
