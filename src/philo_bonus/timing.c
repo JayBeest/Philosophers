@@ -45,6 +45,6 @@ void	custom_sleep(t_msecs ms)
 	t_time_stamp	start;
 
 	start = set_time();
-	while (ms - passed(start, MS) > 0)
+	while (ms * 1000 - passed(start, US) > 0)
 		usleep(INTERVAL);
 }
