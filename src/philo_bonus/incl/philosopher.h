@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:49 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 02:35:54 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/08 22:20:55 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef enum e_bool
 typedef enum e_err
 {
 	NO_ERROR,
+	SIGACT_FAIL,
 	MALLOC_FAIL
 }			t_err;
 
@@ -78,8 +79,8 @@ typedef struct s_philo
 {
 	int				id;
 	int				pid;
-	t_time_stamp	last_eaten;
 	int				times_eaten;
+	t_time_stamp	last_eaten;
 	t_settings		*settings;
 	sem_t			*forks_sem;
 	sem_t			*talk_sem;

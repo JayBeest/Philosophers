@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:54:15 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/06 20:54:15 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/08 23:23:15 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,6 @@
 # define INIT_H
 
 t_err	init_struct(t_info *info);
+t_err	init_signals(void);
 
 #endif

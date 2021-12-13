@@ -6,15 +6,17 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:54:40 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 14:28:26 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/10 17:47:56 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include <philosopher.h>
 #include <threads.h>
 #include <timing.h>
 #include <talk.h>
 #include <talk2.h>
+#include <signal.h>
 
 void	talk_now(t_philo philo, t_message msg)
 {
@@ -38,8 +40,11 @@ void	talk_now(t_philo philo, t_message msg)
 	// }
 }
 
+
+
 void	eat_now(t_philo *philo)
 {
+	kill(getppid(), SIGUSR1);
 	philo->last_eaten = set_time();
 	philo->times_eaten++;
 	talk_now(*philo, EAT);
@@ -56,21 +61,14 @@ void	sleep_now(t_philo *philo)
 
 void	grab_forks(t_philo *philo)
 {
+	if (philo->times_eaten == 0)
+	{
+		philo->settings->start_time = set_time();
+		custom_sleep(1);
+	}
 	if (sem_wait(philo->forks_sem) == -1)
 		printf("sem_wait fail ---> err=%s\n", strerror(errno));
 	talk_now(*philo, R_FORK);
 	sem_wait(philo->forks_sem);
 	talk_now(*philo, L_FORK);
 }
-
-// void	drop_forks(t_philo philo)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < philo.settings->num_philos)
-// 	{
-// 		pthread_mutex_unlock(&philo.mutex->forks[i]);
-// 		i++;
-// 	}
-// }
