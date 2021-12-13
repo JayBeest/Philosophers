@@ -16,6 +16,7 @@
 
 void	say_l_fork(t_philo philo, t_msecs time)
 {
+	printf(WHITE);
 	printf("%5lu  Philosopher %2d has taken a ", time, philo.id);
 	printf(BLUE);
 	printf("fork\n");

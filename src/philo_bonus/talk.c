@@ -24,6 +24,7 @@ void	say_l_fork(t_philo philo, t_msecs time)
 
 void	say_r_fork(t_philo philo, t_msecs time)
 {
+	printf(WHITE);
 	printf("%5lu  Philosopher %2d has taken a ", time, philo.id);
 	printf(RED);
 	printf("fork\n");
