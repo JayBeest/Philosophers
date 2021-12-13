@@ -16,6 +16,7 @@
 #include <init.h>
 #include <timing.h>
 #include <threads.h>
+#include <talk2.h>
 #include <utils.h>
 
 #include <sys/errno.h>
@@ -92,6 +93,8 @@ int	main(int argc, char **argv)
 	ft_bzero(&info, sizeof(info));
 	if (parse_input(argc, argv, &info.settings) == FALSE)
 		return (2);
+	if (info.settings.num_philos == 1)
+		return (return_single_philo());
 	if (init_struct(&info) == MALLOC_FAIL)
 		return (3);
 	if (start_philos(&info) != 0)
