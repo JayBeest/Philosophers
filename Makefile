@@ -34,7 +34,7 @@ endif
 
 OBJ_DIR	= 	$(SRC_DIR)/obj
 INCL = 		-I$(SRC_DIR)/incl
-C_FLAGS = 	-Wall -Wextra -Werror -fsanitize=address
+C_FLAGS = 	-Wall -Wextra -Werror #-fsanitize=thread
 
 OBJ = 		$(SRC:%.c=$(OBJ_DIR)/%.o)
 
