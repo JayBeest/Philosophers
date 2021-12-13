@@ -10,26 +10,32 @@
 # ************************************************************************** #
 
 NAME = 	philo
-SRC_NO_BONUS =	philosopher.c \
-				parser.c \
-				init.c \
-				timing.c \
-				threads.c \
-				act.c \
-				talk.c \
-				talk2.c \
-				utils.c
+SRC =		philosopher.c \
+			parser.c \
+			init.c \
+			timing.c \
+			threads.c \
+			act.c \
+			talk.c \
+			talk2.c \
+			utils.c
 
-SRC_BONUS =		monitor.c \
-				child.c \
-				handlers.c \
+SRC_BONUS =	philosopher.c \
+			parser.c \
+			init.c \
+			timing.c \
+			act.c \
+			talk.c \
+			talk2.c \
+			utils.c \
+			monitor.c \
+			child.c
 
 ifdef BONUS
 SRC_DIR = src/philo_bonus
-SRC = $(SRC_NO_BONUS) $(SRC_BONUS)
+SRC = $(SRC_BONUS)
 else
 SRC_DIR = src/philo
-SRC = $(SRC_NO_BONUS)
 endif
 
 OBJ_DIR	= 	$(SRC_DIR)/obj
@@ -39,9 +45,11 @@ C_FLAGS = 	-Wall -Wextra -Werror #-fsanitize=thread
 OBJ = 		$(SRC:%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
+	touch src/philo_bonus/philosopher.c
 
 bonus:
 	$(MAKE) BONUS=1 all
+	touch src/philo/philosopher.c
 
 $(NAME): $(OBJ)
 	$(CC) $^ $(C_FLAGS) -o $@
