@@ -16,6 +16,8 @@
 #include <talk.h>
 #include <talk2.h>
 
+#include <stdio.h>
+
 void	talk_now(t_philo philo, t_message msg)
 {
 	static t_talk_ptr	fun_ptr[6] = {
@@ -28,10 +30,10 @@ void	talk_now(t_philo philo, t_message msg)
 	};
 	t_msecs				time;
 
-	time = passed(philo.settings->start_time, MS);
 	if (msg == DIE || noone_died(philo))
 	{
 		pthread_mutex_lock(&philo.mutex->talk);
+		time = passed(philo.settings->start_time, MS);
 		fun_ptr[msg](philo, time);
 		pthread_mutex_unlock(&philo.mutex->talk);
 	}

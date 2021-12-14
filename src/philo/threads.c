@@ -15,12 +15,15 @@
 #include <timing.h>
 #include <act.h>
 
+#include <stdio.h>
+
 t_bool	noone_died(t_philo philo)
 {
 	pthread_mutex_lock(&philo.mutex->dead);
 	if (philo.settings->died)
 	{
 		pthread_mutex_unlock(&philo.mutex->dead);
+		printf("SOMEONE DIED!!!!\n");
 		return (FALSE);
 	}
 	pthread_mutex_unlock(&philo.mutex->dead);
@@ -50,11 +53,11 @@ void	*philo_thread(void *arg)
 		noone_died(*philo))
 	{
 		grab_forks(philo);
-		if (noone_died(*philo))
+		if (noone_died(*philo) && !is_full(*philo, TRUE))
 			eat_now(philo);
-		if (noone_died(*philo))
+		if (noone_died(*philo) && !is_full(*philo, TRUE))
 			sleep_now(philo);
-		if (noone_died(*philo))
+		if (noone_died(*philo) && !is_full(*philo, TRUE))
 			talk_now(*philo, THINK);
 	}
 	drop_forks(*philo);

@@ -87,10 +87,13 @@ int	main(int argc, char **argv)
 	ft_bzero(&info, sizeof(info));
 	if (parse_input(argc, argv, &info.settings) == FALSE)
 		return (2);
-	if (info.settings.num_philos == 1)
-		return (return_single_philo());
 	if (init_struct(&info) == MALLOC_FAIL)
 		return (3);
+	if (info.settings.num_philos == 1)
+	{
+		single_philo(*info.philos);
+		return (free_stuff(info, 0));
+	}
 	if (spawn_philos(&info) != 0)
 		return (free_stuff(info, 4));
 	if (wait_philos(&info) != 0)

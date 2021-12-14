@@ -38,16 +38,16 @@ t_err	philo_child(t_philo *philo)
 		return (printf("Create_monitor_thread(philoID=%d) FAIL..\n", philo->id));
 	while (!is_full(*philo))
 	{
-		if (someone_died(*philo))
+		if (someone_died(*philo) || is_full(*philo))
 			break ;
 		grab_forks(philo);
-		if (someone_died(*philo))
+		if (someone_died(*philo) || is_full(*philo))
 			break ;
 		eat_now(philo);
-		if (someone_died(*philo))
+		if (someone_died(*philo) || is_full(*philo))
 			break ;
 		sleep_now(philo);
-		if (someone_died(*philo))
+		if (someone_died(*philo) || is_full(*philo))
 			break ;
 		talk_now(*philo, THINK);
 	}

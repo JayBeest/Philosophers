@@ -74,9 +74,7 @@ void	*child_monitor_thread(void *arg)
 	{
 		usleep(INTERVAL);
 		if (is_full(*philo) || someone_died(*philo))
-		{
 			return (NULL);
-		}
 		pthread_mutex_lock(&philo->mutex->dead);
 		philo->settings->died = check_death_timer(*philo);
 		pthread_mutex_unlock(&philo->mutex->dead);
