@@ -31,7 +31,6 @@ t_bool	someone_died(t_philo philo)
 
 t_err	philo_child(t_philo *philo)
 {
-	philo->settings->start_time = set_time();
 	philo->last_eaten = philo->settings->start_time;
 	if (pthread_create(&philo->monitor_thread, NULL, \
 		&child_monitor_thread, philo) != 0)

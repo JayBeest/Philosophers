@@ -29,12 +29,13 @@ void	talk_now(t_philo philo, t_message msg)
 	};
 	t_msecs					time;
 
-	time = passed(philo.settings->start_time, MS);
-	printf(WHITE);
-	sem_wait(philo.talk_sem);
 	if (!someone_died(philo) || msg == DIE)
+	{
+		sem_wait(philo.talk_sem);
+		time = passed(philo.settings->start_time, MS);
 		fun_ptr[msg](philo, time);
-	sem_post(philo.talk_sem);
+		sem_post(philo.talk_sem);
+	}
 }
 
 void	eat_now(t_philo *philo)

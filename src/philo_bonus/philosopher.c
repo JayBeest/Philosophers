@@ -46,6 +46,7 @@ int	spawn_philos(t_info *info)
 	int	i;
 
 	i = 0;
+	info->settings.start_time = set_time();
 	while (i < info->settings.num_philos)
 	{
 		id = fork();
@@ -61,7 +62,6 @@ int	spawn_philos(t_info *info)
 		i++;
 	}
 	start_sim(info);
-	info->settings.start_time = set_time();
 	return (0);
 }
 
