@@ -13,6 +13,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <philosopher.h>
+#include <threads.h>
 
 t_time_stamp	set_time(void)
 {
@@ -40,11 +41,11 @@ long	passed(t_time_stamp start, t_time_unit time_unit)
 		(current.tv_usec - start.usec) / 1000000);
 }
 
-void	custom_sleep(t_msecs ms)
+void	custom_sleep(t_msecs ms, t_philo philo)
 {
 	t_time_stamp	start;
 
 	start = set_time();
-	while (ms * 1000 - passed(start, US) > 0)
+	while (noone_died(philo) && ms * 1000 - passed(start, US) > 0)
 		usleep(INTERVAL);
 }

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <pthread.h>
 #include <philosopher.h>
 #include <utils.h>
 

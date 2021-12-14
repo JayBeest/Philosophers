@@ -18,8 +18,6 @@
 #include <threads.h>
 #include <talk2.h>
 #include <utils.h>
-
-#include <sys/errno.h>
 #include <stdio.h>
 
 int	free_stuff(t_info info, int return_value)

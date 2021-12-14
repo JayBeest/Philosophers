@@ -10,13 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
 #include <unistd.h>
 #include <philosopher.h>
 #include <timing.h>
 #include <act.h>
-
-#include <stdio.h>
 
 t_bool	noone_died(t_philo philo)
 {

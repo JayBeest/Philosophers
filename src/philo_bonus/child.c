@@ -15,7 +15,6 @@
 #include <act.h>
 #include <timing.h>
 #include <monitor.h>
-#include <semaphore.h>
 
 t_bool	someone_died(t_philo philo)
 {

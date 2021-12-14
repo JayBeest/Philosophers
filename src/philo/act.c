@@ -42,7 +42,7 @@ void	eat_now(t_philo *philo)
 	philo->last_eaten = set_time();
 	philo->times_eaten++;
 	talk_now(*philo, EAT);
-	custom_sleep(philo->settings->eat_time);
+	custom_sleep(philo->settings->eat_time, *philo);
 	if (philo->id % 2)
 	{
 		pthread_mutex_unlock(philo->left_fork);
@@ -58,7 +58,7 @@ void	eat_now(t_philo *philo)
 void	sleep_now(t_philo *philo)
 {
 	talk_now(*philo, SLEEP);
-	custom_sleep(philo->settings->sleep_time);
+	custom_sleep(philo->settings->sleep_time, *philo);
 }
 
 void	grab_forks(t_philo *philo)
