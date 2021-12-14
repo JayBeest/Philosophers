@@ -32,6 +32,8 @@ t_bool	noone_died(t_philo philo)
 
 t_bool	is_full(t_philo philo, t_bool only_checking)
 {
+	if (philo.settings->max_eat == 0)
+		return (FALSE);
 	pthread_mutex_lock(&philo.mutex->full);
 	if (philo.times_eaten != philo.settings->max_eat)
 	{

@@ -95,7 +95,7 @@ int	main(int argc, char **argv)
 		return (3);
 	if (info.settings.num_philos == 1)
 	{
-		return_single_philo(info.philos);
+		single_philo(*info.philos);
 		return (free_stuff(info, 0));
 	}
 	if (start_philos(&info) != 0)
