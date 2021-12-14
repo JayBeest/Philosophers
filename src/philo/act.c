@@ -19,12 +19,12 @@
 void	talk_now(t_philo philo, t_message msg)
 {
 	static t_talk_ptr	fun_ptr[6] = {
-		[EAT] = say_eat,
-		[SLEEP] = say_sleep,
-		[THINK] = say_think,
-		[L_FORK] = say_l_fork,
-		[R_FORK] = say_r_fork,
-		[DIE] = say_die
+	[EAT] = say_eat,
+	[SLEEP] = say_sleep,
+	[THINK] = say_think,
+	[L_FORK] = say_l_fork,
+	[R_FORK] = say_r_fork,
+	[DIE] = say_die
 	};
 	t_msecs				time;
 

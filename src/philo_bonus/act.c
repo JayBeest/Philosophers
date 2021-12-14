@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:54:40 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/13 20:07:12 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/14 01:24:30 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@
 
 void	talk_now(t_philo philo, t_message msg)
 {
-	static t_talk_ptr	fun_ptr[6] = {
-		[EAT] = say_eat,
-		[SLEEP] = say_sleep,
-		[THINK] = say_think,
-		[L_FORK] = say_l_fork,
-		[R_FORK] = say_r_fork,
-		[DIE] = say_die
+	static const t_talk_ptr	fun_ptr[6] = {
+	[EAT] = say_eat,
+	[SLEEP] = say_sleep,
+	[THINK] = say_think,
+	[L_FORK] = say_l_fork,
+	[R_FORK] = say_r_fork,
+	[DIE] = say_die
 	};
-	t_msecs				time;
+	t_msecs					time;
 
 	time = passed(philo.settings->start_time, MS);
 	printf(WHITE);
