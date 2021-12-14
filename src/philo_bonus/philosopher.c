@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:44 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/13 20:20:07 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/14 00:09:31 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	wait_philos(t_info *info)
 	i = 0;
 	while (i < info->settings.num_philos)
 	{
-		waitpid(0, NULL, 0);
+		waitpid(-1, NULL, 0);
 		i++;
 	}
 	return (0);
