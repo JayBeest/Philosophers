@@ -33,7 +33,7 @@ long	passed(t_time_stamp start, t_time_unit time_unit)
 	gettimeofday(&current, NULL);
 	if (time_unit == US)
 		return ((current.tv_sec - start.sec) * 1000000 + \
-			(current.tv_usec - start.usec));
+			(current.tv_usec - start.usec + 512));
 	else if (time_unit == MS)
 		return ((current.tv_sec - start.sec) * 1000 + \
 			(current.tv_usec - start.usec) / 1000);

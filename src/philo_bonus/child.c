@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 22:40:05 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/13 20:02:54 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/15 01:31:36 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,16 @@ t_err	philo_child(t_philo *philo)
 		return (printf("Create_monitor_thread(philoID=%d) FAIL..\n", philo->id));
 	while (!is_full(*philo))
 	{
-		if (someone_died(*philo) || is_full(*philo))
+		if (someone_died(*philo))
 			break ;
 		grab_forks(philo);
-		if (someone_died(*philo) || is_full(*philo))
+		if (someone_died(*philo))
 			break ;
 		eat_now(philo);
 		if (someone_died(*philo) || is_full(*philo))
 			break ;
 		sleep_now(philo);
-		if (someone_died(*philo) || is_full(*philo))
+		if (someone_died(*philo))
 			break ;
 		talk_now(*philo, THINK);
 	}

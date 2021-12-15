@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:05:11 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/11/30 22:30:09 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/15 03:34:22 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,15 @@ t_bool	parse_input(int argc, char **argv, t_settings *settings)
 	else
 		return (FALSE);
 	if (is_int(argv[2]))
-		settings->die_time = ft_atoi(argv[2]);
+		settings->die_time = ft_atoi(argv[2]) * 1000;
 	else
 		return (FALSE);
 	if (is_int(argv[3]))
-		settings->eat_time = ft_atoi(argv[3]);
+		settings->eat_time = ft_atoi(argv[3]) * 1000;
 	else
 		return (FALSE);
 	if (is_int(argv[4]))
-		settings->sleep_time = ft_atoi(argv[4]);
+		settings->sleep_time = ft_atoi(argv[4]) * 1000;
 	else
 		return (FALSE);
 	if (argc == 6 && is_int(argv[5]))

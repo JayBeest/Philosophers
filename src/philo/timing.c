@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:55:43 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/06 23:59:20 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/15 04:38:24 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ long	passed(t_time_stamp start, t_time_unit time_unit)
 	gettimeofday(&current, NULL);
 	if (time_unit == US)
 		return ((current.tv_sec - start.sec) * 1000000 + \
-			(current.tv_usec - start.usec));
+			(current.tv_usec - start.usec + 512));
 	else if (time_unit == MS)
 		return ((current.tv_sec - start.sec) * 1000 + \
 			(current.tv_usec - start.usec) / 1000);
@@ -41,11 +41,26 @@ long	passed(t_time_stamp start, t_time_unit time_unit)
 		(current.tv_usec - start.usec) / 1000000);
 }
 
-void	custom_sleep(t_msecs ms, t_philo philo)
+int	check_death_timer(t_info info)
+{
+	int	i;
+
+	i = 0;
+	while (i < info.settings.num_philos)
+	{
+		if (!is_full(info.philos[i]) && \
+			passed(info.philos[i].last_eaten, US) > info.settings.die_time)
+			return (i + 1);
+		i++;
+	}
+	return (0);
+}
+
+void	custom_sleep(t_usecs us, t_philo philo)
 {
 	t_time_stamp	start;
 
 	start = set_time();
-	while (noone_died(philo) && ms * 1000 - passed(start, US) > 0)
+	while (!someone_died(philo) && us - passed(start, US) > 0)
 		usleep(INTERVAL);
 }

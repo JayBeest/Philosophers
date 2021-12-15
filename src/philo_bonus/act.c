@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:54:40 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/14 01:24:30 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/15 01:17:51 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,15 @@ void	talk_now(t_philo philo, t_message msg)
 void	eat_now(t_philo *philo)
 {
 	philo->last_eaten = set_time();
-	philo->times_eaten++;
 	talk_now(*philo, EAT);
 	custom_sleep(philo->settings->eat_time, *philo);
+	philo->times_eaten++;
+	if (philo->times_eaten == philo->settings->max_eat)
+	{
+		pthread_mutex_lock(&philo->mutex->full);
+		philo->settings->nr_philos_full++;
+		pthread_mutex_unlock(&philo->mutex->full);
+	}
 	sem_post(philo->forks_sem);
 	sem_post(philo->forks_sem);
 }

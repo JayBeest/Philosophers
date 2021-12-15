@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:54:40 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 14:28:26 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/15 03:21:12 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	talk_now(t_philo philo, t_message msg)
 	};
 	t_msecs				time;
 
-	if (msg == DIE || noone_died(philo))
+	if (!someone_died(philo) || msg == DIE)
 	{
 		pthread_mutex_lock(&philo.mutex->talk);
 		time = passed(philo.settings->start_time, MS);
@@ -41,10 +41,16 @@ void	talk_now(t_philo philo, t_message msg)
 
 void	eat_now(t_philo *philo)
 {
-	philo->last_eaten = set_time();
-	philo->times_eaten++;
 	talk_now(*philo, EAT);
+	philo->last_eaten = set_time();
 	custom_sleep(philo->settings->eat_time, *philo);
+	philo->times_eaten++;
+	if (philo->times_eaten == philo->settings->max_eat)
+	{
+		pthread_mutex_lock(&philo->mutex->full);
+		philo->settings->nr_philos_full++;
+		pthread_mutex_unlock(&philo->mutex->full);
+	}
 	if (philo->id % 2)
 	{
 		pthread_mutex_unlock(philo->left_fork);

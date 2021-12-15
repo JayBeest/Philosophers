@@ -72,7 +72,7 @@ void	*child_monitor_thread(void *arg)
 	philo = (t_philo *)arg;
 	while (philo->settings->died == 0)
 	{
-		usleep(INTERVAL);
+		usleep(MONITORING_INTERVAL);
 		if (is_full(*philo) || someone_died(*philo))
 			return (NULL);
 		pthread_mutex_lock(&philo->mutex->dead);

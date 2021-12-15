@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 14:25:12 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 14:25:12 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/15 03:38:47 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	single_philo(t_philo philo)
 	printf(RED);
 	printf("fork\n");
 	printf(WHITE);
-	usleep(philo.settings->die_time * 1000);
-	printf("%5lu  Philosopher %2d ", philo.settings->die_time + 1, 1);
+	usleep(philo.settings->die_time);
+	printf("%5lu  Philosopher %2d ", philo.settings->die_time / 1000 + 1, 1);
 	printf(PURPLE);
 	printf("died\n");
 	printf(WHITE);
