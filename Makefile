@@ -6,7 +6,7 @@
 #   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        #
 #                                                +#+#+#+#+#+   +#+           #
 #   Created: 2021/11/30 02:05:25 by jcorneli          #+#    #+#             #
-#   Updated: 202#   Updated: 2021/12/09 00:22:21 by jcorneli         ###   ########.fr       #                                                              #
+#   Updated: 202#   Updated: 2021/12/15 04:29:23 by jcorneli         ###   ########.fr       #                                                              #
 # ************************************************************************** #
 
 NAME = 	philo
@@ -40,7 +40,7 @@ endif
 
 OBJ_DIR	= 	$(SRC_DIR)/obj
 INCL = 		-I$(SRC_DIR)/incl
-C_FLAGS = 	-Wall -Wextra -Werror #-fsanitize=thread
+C_FLAGS = 	-Wall -Wextra -Werror -Ofast #-g -fsanitize=thread
 
 OBJ = 		$(SRC:%.c=$(OBJ_DIR)/%.o)
 

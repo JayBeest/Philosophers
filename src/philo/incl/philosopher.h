@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:04:49 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/15 03:07:22 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/15 04:12:00 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <pthread.h>
 
 # define INTERVAL 256
-# define MONITORING_INTERVAL 4608
+# define MONITORING_INTERVAL 2048
 
 typedef long	t_secs;
 typedef long	t_msecs;

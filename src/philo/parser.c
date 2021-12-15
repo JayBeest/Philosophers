@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 02:05:11 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/15 03:34:22 by jcorneli         ###   ########.fr       */
+/*   Updated: 2021/12/15 03:35:37 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_bool	parse_input(int argc, char **argv, t_settings *settings)
 	else
 		return (FALSE);
 	if (is_int(argv[2]))
-		settings->die_time = ft_atoi(argv[2]) * 1000;
+		settings->die_time = ft_atoi(argv[2]);
 	else
 		return (FALSE);
 	if (is_int(argv[3]))
