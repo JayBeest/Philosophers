@@ -20,7 +20,6 @@
 
 typedef long	t_secs;
 typedef long	t_msecs;
-typedef long	t_usecs;
 
 typedef enum e_bool
 {

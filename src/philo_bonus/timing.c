@@ -15,6 +15,8 @@
 #include <philosopher.h>
 #include <child.h>
 
+#include <stdio.h>
+
 t_time_stamp	set_time(void)
 {
 	t_time_stamp	time_stamp;
@@ -22,30 +24,32 @@ t_time_stamp	set_time(void)
 
 	gettimeofday(&current, NULL);
 	time_stamp.sec = current.tv_sec;
-	time_stamp.usec = current.tv_usec;
+	time_stamp.msec = current.tv_usec / 1000;
 	return (time_stamp);
 }
 
-long	passed(t_time_stamp start, t_time_unit time_unit)
+long	ms_passed(t_time_stamp start)
 {
 	struct timeval	current;
 
 	gettimeofday(&current, NULL);
-	if (time_unit == US)
-		return ((current.tv_sec - start.sec) * 1000000 + \
-			(current.tv_usec - start.usec + 512));
-	else if (time_unit == MS)
-		return ((current.tv_sec - start.sec) * 1000 + \
-			(current.tv_usec - start.usec) / 1000);
-	return ((current.tv_sec - start.sec) + \
-		(current.tv_usec - start.usec) / 1000000);
+	return ((current.tv_sec - start.sec) * 1000 + \
+		(current.tv_usec / 1000 - start.msec));
+
 }
 
 void	custom_sleep(t_msecs ms, t_philo philo)
 {
 	t_time_stamp	start;
+	int				check_death_counter;
 
+	check_death_counter = 0;
 	start = set_time();
-	while (!someone_died(philo) && ms * 1000 - passed(start, US) > 0)
+	while (ms - ms_passed(start) > 0)
+	{
 		usleep(INTERVAL);
+		if (check_death_counter % 8 == 0 && someone_died(philo))
+			break ;
+		check_death_counter++;
+	}
 }

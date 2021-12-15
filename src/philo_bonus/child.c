@@ -21,7 +21,8 @@ t_bool	someone_died(t_philo philo)
 	pthread_mutex_lock(&philo.mutex->dead);
 	if (sem_trywait(philo.died_sem) == 0)
 	{
-		sem_post(philo.died_sem);
+		philo.settings->died++;
+		printf("================>SOMEONE DIED<==============(from philo=%d)\n", philo.id);
 		pthread_mutex_unlock(&philo.mutex->dead);
 		return (TRUE);
 	}
@@ -31,6 +32,7 @@ t_bool	someone_died(t_philo philo)
 
 t_err	philo_child(t_philo *philo)
 {
+	// philo->settings->start_time = set_time();
 	philo->last_eaten = philo->settings->start_time;
 	if (pthread_create(&philo->monitor_thread, NULL, \
 		&child_monitor_thread, philo) != 0)

@@ -32,8 +32,10 @@ void	talk_now(t_philo philo, t_message msg)
 	if (!someone_died(philo) || msg == DIE)
 	{
 		sem_wait(philo.talk_sem);
-		time = passed(philo.settings->start_time, MS);
+		// pthread_mutex_lock(&philo.mutex->dead);
+		time = ms_passed(philo.settings->start_time);
 		fun_ptr[msg](philo, time);
+		// pthread_mutex_unlock(&philo.mutex->dead);
 		sem_post(philo.talk_sem);
 	}
 }
@@ -44,12 +46,12 @@ void	eat_now(t_philo *philo)
 	talk_now(*philo, EAT);
 	custom_sleep(philo->settings->eat_time, *philo);
 	philo->times_eaten++;
-	if (philo->times_eaten == philo->settings->max_eat)
-	{
-		pthread_mutex_lock(&philo->mutex->full);
-		philo->settings->nr_philos_full++;
-		pthread_mutex_unlock(&philo->mutex->full);
-	}
+	// if (philo->times_eaten == philo->settings->max_eat)
+	// {
+	// 	pthread_mutex_lock(&philo->mutex->full);
+	// 	philo->settings->nr_philos_full++;
+	// 	pthread_mutex_unlock(&philo->mutex->full);
+	// }
 	sem_post(philo->forks_sem);
 	sem_post(philo->forks_sem);
 }

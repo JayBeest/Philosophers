@@ -14,14 +14,24 @@
 #include <unistd.h>
 #include <philosopher.h>
 #include <talk.h>
+#include <child.h>
 
 void	say_die(t_philo philo, t_msecs time)
 {
+	// pthread_mutex_lock(&philo.mutex->dead);
+	// if (someone_died(philo))
+	// {
+	// 	pthread_mutex_unlock(&philo.mutex->dead);
+	// 	return ;
+	// }
+
 	printf(WHITE);
 	printf("%5lu  Philosopher %2d ", time, philo.id);
 	printf(PURPLE);
 	printf("died\n");
 	printf(WHITE);
+
+	// pthread_mutex_unlock(&philo.mutex->dead);
 }
 
 void	single_philo(t_philo philo)

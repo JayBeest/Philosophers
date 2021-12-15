@@ -50,7 +50,7 @@ int	check_death_timer(t_info info)
 	return (0);
 }
 
-void	custom_sleep(t_usecs ms, t_philo philo)
+void	custom_sleep(t_msecs ms, t_philo philo)
 {
 	t_time_stamp	start;
 	int				check_death_counter;

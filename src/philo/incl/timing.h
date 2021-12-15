@@ -17,7 +17,7 @@
 
 t_time_stamp	set_time(void);
 long			ms_passed(t_time_stamp start);
-void			custom_sleep(t_usecs ms, t_philo philo);
+void			custom_sleep(t_msecs ms, t_philo philo);
 int				check_death_timer(t_info info);
 
 #endif

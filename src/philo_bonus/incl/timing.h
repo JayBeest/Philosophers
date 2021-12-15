@@ -16,7 +16,7 @@
 # include <philosopher.h>
 
 t_time_stamp	set_time(void);
-long			passed(t_time_stamp start, t_time_unit time_unit);
+long			ms_passed(t_time_stamp start);
 void			custom_sleep(t_msecs ms, t_philo philo);
 
 #endif

@@ -49,17 +49,24 @@ void	start_sim(t_info *info)
 		if (sem_post(info->forks_sem) != 0)
 			printf("start_sim SEMPOST FAIL\n");
 		kill(info->philos[i].pid, SIGCONT);
-		usleep(133);
+		usleep(50);
 		i++;
 	}
 }
 
 int	check_death_timer(t_philo philo)
 {
-	if (passed(philo.last_eaten, MS) > philo.settings->die_time)
+	int i;
+
+	if (ms_passed(philo.last_eaten) > philo.settings->die_time)
 	{
-		sem_post(philo.died_sem);
-		sem_post(philo.died_sem);
+		i = 0;
+		while (i < philo.settings->num_philos)
+		{
+			printf("add died_sem\n");
+			sem_post(philo.died_sem);
+			i++;
+		}
 		return (1);
 	}
 	return (0);
@@ -70,6 +77,7 @@ void	*child_monitor_thread(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	// philo->settings->start_time = set_time();
 	while (philo->settings->died == 0)
 	{
 		usleep(MONITORING_INTERVAL);
