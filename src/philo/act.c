@@ -33,7 +33,7 @@ void	talk_now(t_philo philo, t_message msg)
 	if (!someone_died(philo) || msg == DIE)
 	{
 		pthread_mutex_lock(&philo.mutex->talk);
-		time = passed(philo.settings->start_time, MS);
+		time = ms_passed(philo.settings->start_time);
 		fun_ptr[msg](philo, time);
 		pthread_mutex_unlock(&philo.mutex->talk);
 	}

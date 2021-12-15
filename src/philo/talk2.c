@@ -18,7 +18,7 @@
 void	say_die(t_philo philo, t_msecs time)
 {
 	printf(WHITE);
-	printf("%5lu  Philosopher %2d ", time, philo.settings->died);
+	printf("%8lu  Philosopher %2d ", time, philo.settings->died);
 	printf(PURPLE);
 	printf("died\n");
 	printf(WHITE);
@@ -27,12 +27,12 @@ void	say_die(t_philo philo, t_msecs time)
 void	single_philo(t_philo philo)
 {
 	printf(WHITE);
-	printf("%5lu  Philosopher %2d has taken a ", 0ul, 1);
+	printf("%8lu  Philosopher %2d has taken a ", 0ul, 1);
 	printf(RED);
 	printf("fork\n");
 	printf(WHITE);
-	usleep(philo.settings->die_time);
-	printf("%5lu  Philosopher %2d ", philo.settings->die_time / 1000 + 1, 1);
+	usleep(philo.settings->die_time * 1000);
+	printf("%8lu  Philosopher %2d ", philo.settings->die_time + 1, 1);
 	printf(PURPLE);
 	printf("died\n");
 	printf(WHITE);

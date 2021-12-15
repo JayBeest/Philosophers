@@ -15,7 +15,7 @@
 
 # include <pthread.h>
 
-# define INTERVAL 256
+# define INTERVAL 512
 # define MONITORING_INTERVAL 2048
 
 typedef long	t_secs;
@@ -47,15 +47,8 @@ typedef enum e_message
 typedef struct s_time_stamp
 {
 	t_secs	sec;
-	t_usecs	usec;
+	t_msecs	msec;
 }			t_time_stamp;
-
-typedef enum e_time_unit
-{
-	S,
-	MS,
-	US
-}			t_time_unit;
 
 typedef struct s_settings
 {

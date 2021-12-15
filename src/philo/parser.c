@@ -38,11 +38,11 @@ t_bool	parse_input(int argc, char **argv, t_settings *settings)
 	else
 		return (FALSE);
 	if (is_int(argv[3]))
-		settings->eat_time = ft_atoi(argv[3]) * 1000;
+		settings->eat_time = ft_atoi(argv[3]);
 	else
 		return (FALSE);
 	if (is_int(argv[4]))
-		settings->sleep_time = ft_atoi(argv[4]) * 1000;
+		settings->sleep_time = ft_atoi(argv[4]);
 	else
 		return (FALSE);
 	if (argc == 6 && is_int(argv[5]))

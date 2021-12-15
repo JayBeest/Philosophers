@@ -23,7 +23,6 @@ t_bool	someone_died(t_philo philo)
 	if (philo.settings->died)
 	{
 		pthread_mutex_unlock(&philo.mutex->dead);
-//		printf("SOMEONE DIED!!!!\n");
 		return (TRUE);
 	}
 	pthread_mutex_unlock(&philo.mutex->dead);
