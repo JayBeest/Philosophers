@@ -14,6 +14,6 @@
 # define INIT_H
 
 t_err	init_struct(t_info *info);
-t_err	init_signals(void);
+t_err	init_signal(void);
 
 #endif

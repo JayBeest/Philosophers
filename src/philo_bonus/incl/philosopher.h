@@ -16,7 +16,7 @@
 # include <pthread.h>
 # include <semaphore.h>
 
-# define INTERVAL 256
+# define INTERVAL 512
 # define MONITORING_INTERVAL 2048
 
 typedef long	t_secs;
@@ -83,6 +83,7 @@ typedef struct s_philo
 	sem_t			*forks_sem;
 	sem_t			*talk_sem;
 	sem_t			*died_sem;
+	sem_t			*first_dying;
 }			t_philo;
 
 typedef struct s_info
@@ -90,6 +91,7 @@ typedef struct s_info
 	sem_t			*forks_sem;
 	sem_t			*talk_sem;
 	sem_t			*died_sem;
+	sem_t			*can_talk_death_sem;
 	t_settings		settings;
 	pthread_t		monitor;
 	t_philo			*philos;

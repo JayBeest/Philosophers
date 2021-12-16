@@ -29,14 +29,12 @@ int	free_stuff(t_info info, int return_value)
 	return (return_value);
 }
 
-int	destroy(t_info *info)
+int	destroy(void)
 {
 	sem_unlink("forkpile");
-	sem_close(info->forks_sem);
 	sem_unlink("talk");
-	sem_close(info->talk_sem);
 	sem_unlink("died");
-	sem_close(info->died_sem);
+	sem_unlink("death");
 	return (0);
 }
 
@@ -57,11 +55,11 @@ int	spawn_philos(t_info *info)
 			philo_child(&info->philos[i]);
 			exit (0);
 		}
-		kill(id, SIGSTOP);
+//		kill(id, SIGSTOP);
 		info->philos[i].pid = id;
 		i++;
 	}
-	start_sim(info);
+	init_signal();
 	return (0);
 }
 
@@ -92,13 +90,13 @@ int	main(int argc, char **argv)
 	if (info.settings.num_philos == 1)
 	{
 		single_philo(*info.philos);
+		destroy();
 		return (free_stuff(info, 0));
 	}
 	if (spawn_philos(&info) != 0)
 		return (free_stuff(info, 4));
 	if (wait_philos(&info) != 0)
 		return (free_stuff(info, 5));
-	if (destroy(&info) != 0)
-		return (free_stuff(info, 6));
+	destroy();
 	return (free_stuff(info, 0));
 }

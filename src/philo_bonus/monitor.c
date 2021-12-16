@@ -24,6 +24,7 @@ t_bool	is_full(t_philo philo)
 		return (FALSE);
 	else if (philo.times_eaten != philo.settings->max_eat)
 		return (FALSE);
+//	printf("----->PHILO %d FULL<-----\n", philo.id);
 	return (TRUE);
 }
 
@@ -39,20 +40,21 @@ void	kill_philos(t_info info)
 	}
 }
 
-void	start_sim(t_info *info)
-{
-	int	i;
-
-	i = 0;
-	while (i < info->settings.num_philos)
-	{
-		if (sem_post(info->forks_sem) != 0)
-			printf("start_sim SEMPOST FAIL\n");
-		kill(info->philos[i].pid, SIGCONT);
-		usleep(50);
-		i++;
-	}
-}
+//void	start_sim(t_info *info)
+//{
+//	int	i;
+//
+//	i = 0;
+//	while (i < info->settings.num_philos)
+//	{
+//		if (sem_post(info->forks_sem) != 0)
+//			printf("start_sim SEMPOST FAIL\n");
+//		kill(info->philos[i].pid, SIGCONT);
+//		usleep(25);
+//		i++;
+//	}
+////	info->settings.start_time = set_time();
+//}
 
 int	check_death_timer(t_philo philo)
 {
@@ -63,7 +65,7 @@ int	check_death_timer(t_philo philo)
 		i = 0;
 		while (i < philo.settings->num_philos)
 		{
-			printf("add died_sem\n");
+//			printf("add died_sem\n");
 			sem_post(philo.died_sem);
 			i++;
 		}
@@ -72,13 +74,25 @@ int	check_death_timer(t_philo philo)
 	return (0);
 }
 
+void	drop_forks(t_philo philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo.settings->num_philos)
+	{
+		sem_post(philo.forks_sem);
+		i++;
+	}
+}
+
 void	*child_monitor_thread(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	// philo->settings->start_time = set_time();
-	while (philo->settings->died == 0)
+	while (!someone_died(*philo))
 	{
 		usleep(MONITORING_INTERVAL);
 		if (is_full(*philo) || someone_died(*philo))
@@ -87,6 +101,10 @@ void	*child_monitor_thread(void *arg)
 		philo->settings->died = check_death_timer(*philo);
 		pthread_mutex_unlock(&philo->mutex->dead);
 	}
-	talk_now(*philo, DIE);
+	if (sem_trywait(philo->first_dying) == 0)
+	{
+		talk_now(*philo, DIE);
+		drop_forks(*philo);
+	}
 	return (NULL);
 }
