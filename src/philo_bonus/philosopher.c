@@ -55,7 +55,6 @@ int	spawn_philos(t_info *info)
 			philo_child(&info->philos[i]);
 			exit (0);
 		}
-//		kill(id, SIGSTOP);
 		info->philos[i].pid = id;
 		i++;
 	}

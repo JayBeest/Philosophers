@@ -58,7 +58,7 @@ void	kill_philos(t_info info)
 
 int	check_death_timer(t_philo philo)
 {
-	int i;
+	int	i;
 
 	if (ms_passed(philo.last_eaten) > philo.settings->die_time)
 	{

@@ -24,13 +24,11 @@ void	say_die(t_philo philo, t_msecs time)
 	// 	pthread_mutex_unlock(&philo.mutex->dead);
 	// 	return ;
 	// }
-
 	printf(WHITE);
 	printf("%5lu  Philosopher %2d ", time, philo.id);
 	printf(PURPLE);
 	printf("died\n");
 	printf(WHITE);
-
 	// pthread_mutex_unlock(&philo.mutex->dead);
 }
 

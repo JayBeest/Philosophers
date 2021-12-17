@@ -35,7 +35,6 @@ long	ms_passed(t_time_stamp start)
 	gettimeofday(&current, NULL);
 	return ((current.tv_sec - start.sec) * 1000 + \
 		(current.tv_usec / 1000 - start.msec));
-
 }
 
 void	custom_sleep(t_msecs ms, t_philo philo)
