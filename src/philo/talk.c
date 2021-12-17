@@ -17,7 +17,6 @@
 
 void	say_l_fork(t_philo philo, t_msecs time)
 {
-	printf(WHT);
 	printf(WHT "%6lu  " RESET, time);
 	printf("Philosopher " WHT "%3d " RESET "has taken a ", philo.id);
 	printf(UBLU "fork\n" RESET);
@@ -25,7 +24,6 @@ void	say_l_fork(t_philo philo, t_msecs time)
 
 void	say_r_fork(t_philo philo, t_msecs time)
 {
-	printf(WHT);
 	printf(WHT "%6lu  " RESET, time);
 	printf("Philosopher " WHT "%3d " RESET "has taken a ", philo.id);
 	printf(URED "fork\n" RESET);

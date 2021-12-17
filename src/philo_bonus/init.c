@@ -68,6 +68,6 @@ t_err	init_signal(void)
 
 	interupt.sa_handler = handle_interupt;
 	sigaction(SIGINT, &interupt, NULL);
-	sigaction(SIGKILL, &interupt, NULL);
+	sigaction(SIGTERM, &interupt, NULL);
 	return (NO_ERROR);
 }

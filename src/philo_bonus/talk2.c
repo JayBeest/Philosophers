@@ -13,35 +13,22 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <philosopher.h>
-#include <talk.h>
-#include <child.h>
+#include <ansi_color_codes.h>
 
 void	say_die(t_philo philo, t_msecs time)
 {
-	// pthread_mutex_lock(&philo.mutex->dead);
-	// if (someone_died(philo))
-	// {
-	// 	pthread_mutex_unlock(&philo.mutex->dead);
-	// 	return ;
-	// }
-	printf(WHITE);
-	printf("%5lu  Philosopher %2d ", time, philo.id);
-	printf(PURPLE);
-	printf("died\n");
-	printf(WHITE);
-	// pthread_mutex_unlock(&philo.mutex->dead);
+	printf(WHT "%8lu  " RESET, time);
+	printf("Philosopher " WHT "%3d ", philo.settings->died);
+	printf(UMAG "died\n" RESET);
 }
 
 void	single_philo(t_philo philo)
 {
-	printf(WHITE);
-	printf("%5lu  Philosopher %2d has taken a ", 0ul, 1);
-	printf(RED);
-	printf("fork\n");
-	printf(WHITE);
+	printf(WHT "%8lu  " RESET, 0ul);
+	printf("Philosopher " WHT "%3d " RESET "has taken a ", 1);
+	printf(RED "fork\n");
 	usleep(philo.settings->die_time * 1000);
-	printf("%5lu  Philosopher %2d ", philo.settings->die_time + 1, 1);
-	printf(PURPLE);
-	printf("died\n");
-	printf(WHITE);
+	printf(WHT "%8lu  " RESET, philo.settings->die_time + 1);
+	printf("Philosopher " WHT "%3d ", 1);
+	printf(UMAG "died\n" RESET);
 }
