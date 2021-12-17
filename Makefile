@@ -31,6 +31,10 @@ SRC_BONUS =	philosopher.c \
 			monitor.c \
 			child.c
 
+SRC_SHARE =	talk.c \
+			talk2.c
+
+
 ifdef BONUS
 SRC_DIR = src/philo_bonus
 SRC = $(SRC_BONUS)
