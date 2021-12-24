@@ -14,9 +14,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
-#include <philosopher.h>
+#include <philosopher_bonus.h>
 #include <parser.h>
-#include <init.h>
+#include <init_bonus.h>
 #include <timing.h>
 #include <monitor.h>
 #include <child.h>

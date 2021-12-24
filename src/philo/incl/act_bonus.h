@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ACT_H
-# define ACT_H
+#ifndef ACT_BONUS_H
+# define ACT_BONUS_H
 
 void	eat_now(t_philo *philo);
 void	sleep_now(t_philo *philo);

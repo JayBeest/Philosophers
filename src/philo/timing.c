@@ -35,21 +35,6 @@ long	ms_passed(t_time_stamp start)
 			(current.tv_usec / 1000 - start.msec));
 }
 
-int	check_death_timer(t_info info)
-{
-	int	i;
-
-	i = 0;
-	while (i < info.settings.num_philos)
-	{
-		if (!is_full(info.philos[i]) && \
-			ms_passed(info.philos[i].last_eaten) > info.settings.die_time)
-			return (i + 1);
-		i++;
-	}
-	return (0);
-}
-
 void	custom_sleep(t_msecs ms, t_philo philo)
 {
 	t_time_stamp	start;
