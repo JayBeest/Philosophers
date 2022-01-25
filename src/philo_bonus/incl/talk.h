@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   timing.h                                           :+:      :+:    :+:   */
+/*   talk.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/06 20:54:32 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/06 20:54:32 by jcorneli         ###   ########.fr       */
+/*   Created: 2021/12/07 14:25:17 by jcorneli          #+#    #+#             */
+/*   Updated: 2021/12/07 14:25:17 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TIMING_H
-# define TIMING_H
+#ifndef TALK_H
+# define TALK_H
 
-# include <philosopher.h>
+typedef void(*t_talk_ptr)(t_philo, t_msecs);
 
-t_time_stamp	set_time(void);
-long			ms_passed(t_time_stamp start);
-void			custom_sleep(t_msecs ms, t_philo philo);
-int				check_death_timer(t_info info);
+void	say_l_fork(t_philo philo, t_msecs time);
+void	say_r_fork(t_philo philo, t_msecs time);
+void	say_eat(t_philo philo, t_msecs time);
+void	say_sleep(t_philo philo, t_msecs time);
+void	say_think(t_philo philo, t_msecs time);
 
 #endif

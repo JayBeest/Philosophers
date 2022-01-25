@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHER_BONUS_H
-# define PHILOSOPHER_BONUS_H
+#ifndef PHILOSOPHER_H
+# define PHILOSOPHER_H
 
 # include <pthread.h>
 # include <semaphore.h>
@@ -84,7 +84,7 @@ typedef struct s_philo
 	sem_t			*forks_sem;
 	sem_t			*talk_sem;
 	sem_t			*died_sem;
-	sem_t			*first_dying;
+	sem_t			*first_dying_sem;
 }			t_philo;
 
 typedef struct s_info
@@ -92,7 +92,7 @@ typedef struct s_info
 	sem_t			*forks_sem;
 	sem_t			*talk_sem;
 	sem_t			*died_sem;
-	sem_t			*can_talk_death_sem;
+	sem_t			*first_dying_sem;
 	t_settings		settings;
 	pthread_t		monitor;
 	t_philo			*philos;

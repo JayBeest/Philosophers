@@ -14,9 +14,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
-#include <philosopher_bonus.h>
+#include <philosopher.h>
 #include <parser.h>
-#include <init_bonus.h>
+#include <init.h>
 #include <timing.h>
 #include <monitor.h>
 #include <child.h>
@@ -78,9 +78,6 @@ int	main(int argc, char **argv)
 {
 	t_info	info;
 
-	destroy();
-
-	
 	if (argc < 5 || argc > 6)
 		return (1);
 	ft_bzero(&info, sizeof(info));
@@ -89,7 +86,7 @@ int	main(int argc, char **argv)
 	if (init_struct(&info) == MALLOC_FAIL)
 		return (3);
 	if (init_mutexes(&info.mutex) == MUTEX_FAIL)
-		return (printf("MUTEX FAIL\n"));
+		return (printf("MUTEX FAIL!!!!!!!!!!!!!!!!!!\n"));
 	if (info.settings.num_philos == 1)
 	{
 		single_philo(*info.philos);

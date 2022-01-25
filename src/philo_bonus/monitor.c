@@ -13,7 +13,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <signal.h>
-#include <philosopher_bonus.h>
+#include <philosopher.h>
 #include <timing.h>
 #include <act.h>
 #include <child.h>
@@ -22,7 +22,7 @@ t_bool	is_full(t_philo philo)
 {
 	if (philo.settings->max_eat == 0)
 		return (FALSE);
-	if (philo.times_eaten != philo.settings->max_eat)
+	else if (philo.times_eaten != philo.settings->max_eat)
 		return (FALSE);
 	return (TRUE);
 }
@@ -43,20 +43,16 @@ int	check_death_timer(t_philo philo)
 {
 	int	i;
 
-	pthread_mutex_lock(&philo.mutex->dead);
 	if (ms_passed(philo.last_eaten) > philo.settings->die_time)
 	{
-		pthread_mutex_unlock(&philo.mutex->dead);
 		i = 0;
 		while (i < philo.settings->num_philos)
 		{
-//			printf("add died_sem\n");
 			sem_post(philo.died_sem);
 			i++;
 		}
 		return (1);
 	}
-	pthread_mutex_unlock(&philo.mutex->dead);
 	return (0);
 }
 
@@ -77,7 +73,6 @@ void	*child_monitor_thread(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	// philo->settings->start_time = set_time();
 	while (!someone_died(*philo))
 	{
 		usleep(MONITORING_INTERVAL);
@@ -92,7 +87,7 @@ void	*child_monitor_thread(void *arg)
 		philo->settings->died = check_death_timer(*philo);
 		pthread_mutex_unlock(&philo->mutex->dead);
 	}
-	if (sem_trywait(philo->first_dying) == 0)
+	if (sem_trywait(philo->first_dying_sem) == 0)
 	{
 		talk_now(*philo, DIE);
 		drop_forks(*philo);

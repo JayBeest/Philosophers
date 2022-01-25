@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   timing.h                                           :+:      :+:    :+:   */
+/*   init.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/06 20:54:32 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/06 20:54:32 by jcorneli         ###   ########.fr       */
+/*   Created: 2021/12/06 20:54:15 by jcorneli          #+#    #+#             */
+/*   Updated: 2021/12/08 23:23:15 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TIMING_H
-# define TIMING_H
+#ifndef INIT_H
+# define INIT_H
 
-# include <philosopher.h>
-
-t_time_stamp	set_time(void);
-long			ms_passed(t_time_stamp start);
-void			custom_sleep(t_msecs ms, t_philo philo);
-int				check_death_timer(t_info info);
-
+t_err	init_struct(t_info *info);
+t_err	init_signal(void);
+t_err	init_mutexes(t_mutex *mutex);
 #endif

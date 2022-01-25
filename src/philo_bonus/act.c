@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <philosopher_bonus.h>
+#include <philosopher.h>
 #include <timing.h>
 #include <child.h>
 #include <talk.h>
@@ -32,9 +32,7 @@ void	talk_now(t_philo philo, t_message msg)
 	if (!someone_died(philo) || msg == DIE)
 	{
 		sem_wait(philo.talk_sem);
-		// pthread_mutex_lock(&philo.mutex->dead);
 		time = ms_passed(philo.settings->start_time);
-		// pthread_mutex_unlock(&philo.mutex->dead);
 		fun_ptr[msg](philo, time);
 		sem_post(philo.talk_sem);
 	}
@@ -50,12 +48,6 @@ void	eat_now(t_philo *philo)
 	pthread_mutex_lock(&philo->mutex->full);
 	philo->times_eaten++;
 	pthread_mutex_unlock(&philo->mutex->full);
-	// if (philo->times_eaten == philo->settings->max_eat)
-	// {
-	// 	pthread_mutex_lock(&philo->mutex->full);
-	// 	philo->settings->nr_philos_full++;
-	// 	pthread_mutex_unlock(&philo->mutex->full);
-	// }
 	sem_post(philo->forks_sem);
 	sem_post(philo->forks_sem);
 }
@@ -68,12 +60,10 @@ void	sleep_now(t_philo *philo)
 
 void	grab_forks(t_philo *philo)
 {
-	// pthread_mutex_lock(&philo->mutex->dead);
 	if (sem_wait(philo->forks_sem) == -1)
 		printf("sem_wait fail ---> philo_id=%d\n", philo->id);
 	talk_now(*philo, R_FORK);
 	if (sem_wait(philo->forks_sem) == -1)
 		printf("sem_wait fail ---> philo_id=%d\n", philo->id);
 	talk_now(*philo, L_FORK);
-	// pthread_mutex_unlock(&philo->mutex->dead);
 }

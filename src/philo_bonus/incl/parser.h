@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   timing.h                                           :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/06 20:54:32 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/06 20:54:32 by jcorneli         ###   ########.fr       */
+/*   Created: 2021/11/30 02:05:04 by jcorneli          #+#    #+#             */
+/*   Updated: 2021/11/30 02:05:04 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TIMING_H
-# define TIMING_H
+#ifndef PARSER_H
+# define PARSER_H
 
-# include <philosopher.h>
-
-t_time_stamp	set_time(void);
-long			ms_passed(t_time_stamp start);
-void			custom_sleep(t_msecs ms, t_philo philo);
-int				check_death_timer(t_info info);
+t_bool	parse_input(int argc, char **argv, t_settings *settings);
 
 #endif
