@@ -43,6 +43,21 @@ t_bool	is_full(t_philo philo)
 	return (TRUE);
 }
 
+int	check_death_timer(t_info info)
+{
+	int	i;
+
+	i = 0;
+	while (i < info.settings.num_philos)
+	{
+		if (!is_full(info.philos[i]) && \
+			ms_passed(info.philos[i].last_eaten) > info.settings.die_time)
+			return (i + 1);
+		i++;
+	}
+	return (0);
+}
+
 t_bool	should_stop_cycle(t_philo philo)
 {
 	t_bool	done_eating;

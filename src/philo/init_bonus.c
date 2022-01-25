@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 #include <signal.h>
-#include <philosopher.h>
+#include <philosopher_bonus.h>
 #include <utils.h>
 
 #include <stdio.h>

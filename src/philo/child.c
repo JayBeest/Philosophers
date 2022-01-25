@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <philosopher.h>
+#include <philosopher_bonus.h>
 #include <act.h>
 #include <timing.h>
 #include <monitor.h>
