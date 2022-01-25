@@ -19,9 +19,9 @@ SHARED =	philosopher.c \
 			talk.c \
 			talk2.c \
 			utils.c
-NO_BONUS =	threads.c
 DO_BONUS =	monitor.c \
 			child.c
+NO_BONUS =	threads.c
 
 ifdef BONUS
 SRC_DIR = src/philo_bonus
