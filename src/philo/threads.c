@@ -89,9 +89,6 @@ void	*monitor_thread(void *arg)
 		if (info->settings.nr_philos_full == info->settings.num_philos)
 		{
 			pthread_mutex_unlock(&info->mutex.full);
-//			pthread_mutex_lock(&info->mutex.dead);
-//			info->settings.died = -1;
-//			pthread_mutex_unlock(&info->mutex.dead);
 			return (NULL);
 		}
 		pthread_mutex_unlock(&info->mutex.full);
