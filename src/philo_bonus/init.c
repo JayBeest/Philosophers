@@ -36,6 +36,16 @@ static t_err	init_philos(t_info *info)
 	return (NO_ERROR);
 }
 
+t_err	init_mutexes(t_mutex *mutex)
+{
+	if (pthread_mutex_init(&mutex->dead, NULL) != 0)
+		return (MUTEX_FAIL);
+	if (pthread_mutex_init(&mutex->full, NULL) != 0)
+		return (MUTEX_FAIL);
+	// printf("DONE INITING MUTEXES!!!!!!!!!!!!!!!!\n");
+	return (NO_ERROR);
+}
+
 t_err	init_struct(t_info *info)
 {
 	int	num_ph;

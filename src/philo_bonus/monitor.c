@@ -22,9 +22,8 @@ t_bool	is_full(t_philo philo)
 {
 	if (philo.settings->max_eat == 0)
 		return (FALSE);
-	else if (philo.times_eaten != philo.settings->max_eat)
+	if (philo.times_eaten != philo.settings->max_eat)
 		return (FALSE);
-//	printf("----->PHILO %d FULL<-----\n", philo.id);
 	return (TRUE);
 }
 
@@ -40,28 +39,14 @@ void	kill_philos(t_info info)
 	}
 }
 
-//void	start_sim(t_info *info)
-//{
-//	int	i;
-//
-//	i = 0;
-//	while (i < info->settings.num_philos)
-//	{
-//		if (sem_post(info->forks_sem) != 0)
-//			printf("start_sim SEMPOST FAIL\n");
-//		kill(info->philos[i].pid, SIGCONT);
-//		usleep(25);
-//		i++;
-//	}
-////	info->settings.start_time = set_time();
-//}
-
 int	check_death_timer(t_philo philo)
 {
 	int	i;
 
+	pthread_mutex_lock(&philo.mutex->dead);
 	if (ms_passed(philo.last_eaten) > philo.settings->die_time)
 	{
+		pthread_mutex_unlock(&philo.mutex->dead);
 		i = 0;
 		while (i < philo.settings->num_philos)
 		{
@@ -71,6 +56,7 @@ int	check_death_timer(t_philo philo)
 		}
 		return (1);
 	}
+	pthread_mutex_unlock(&philo.mutex->dead);
 	return (0);
 }
 
@@ -95,8 +81,13 @@ void	*child_monitor_thread(void *arg)
 	while (!someone_died(*philo))
 	{
 		usleep(MONITORING_INTERVAL);
+		pthread_mutex_lock(&philo->mutex->full);
 		if (is_full(*philo) || someone_died(*philo))
+		{
+			pthread_mutex_unlock(&philo->mutex->full);
 			return (NULL);
+		}
+		pthread_mutex_unlock(&philo->mutex->full);
 		pthread_mutex_lock(&philo->mutex->dead);
 		philo->settings->died = check_death_timer(*philo);
 		pthread_mutex_unlock(&philo->mutex->dead);

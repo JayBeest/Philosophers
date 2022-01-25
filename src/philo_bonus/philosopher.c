@@ -29,13 +29,12 @@ int	free_stuff(t_info info, int return_value)
 	return (return_value);
 }
 
-int	destroy(void)
+void	destroy(void)
 {
 	sem_unlink("forkpile");
 	sem_unlink("talk");
 	sem_unlink("died");
 	sem_unlink("death");
-	return (0);
 }
 
 int	spawn_philos(t_info *info)
@@ -79,6 +78,9 @@ int	main(int argc, char **argv)
 {
 	t_info	info;
 
+	destroy();
+
+	
 	if (argc < 5 || argc > 6)
 		return (1);
 	ft_bzero(&info, sizeof(info));
@@ -86,6 +88,8 @@ int	main(int argc, char **argv)
 		return (2);
 	if (init_struct(&info) == MALLOC_FAIL)
 		return (3);
+	if (init_mutexes(&info.mutex) == MUTEX_FAIL)
+		return (printf("MUTEX FAIL\n"));
 	if (info.settings.num_philos == 1)
 	{
 		single_philo(*info.philos);

@@ -34,18 +34,22 @@ void	talk_now(t_philo philo, t_message msg)
 		sem_wait(philo.talk_sem);
 		// pthread_mutex_lock(&philo.mutex->dead);
 		time = ms_passed(philo.settings->start_time);
-		fun_ptr[msg](philo, time);
 		// pthread_mutex_unlock(&philo.mutex->dead);
+		fun_ptr[msg](philo, time);
 		sem_post(philo.talk_sem);
 	}
 }
 
 void	eat_now(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->mutex->dead);
 	philo->last_eaten = set_time();
+	pthread_mutex_unlock(&philo->mutex->dead);
 	talk_now(*philo, EAT);
 	custom_sleep(philo->settings->eat_time, *philo);
+	pthread_mutex_lock(&philo->mutex->full);
 	philo->times_eaten++;
+	pthread_mutex_unlock(&philo->mutex->full);
 	// if (philo->times_eaten == philo->settings->max_eat)
 	// {
 	// 	pthread_mutex_lock(&philo->mutex->full);
@@ -64,12 +68,12 @@ void	sleep_now(t_philo *philo)
 
 void	grab_forks(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->mutex->dead);
+	// pthread_mutex_lock(&philo->mutex->dead);
 	if (sem_wait(philo->forks_sem) == -1)
 		printf("sem_wait fail ---> philo_id=%d\n", philo->id);
 	talk_now(*philo, R_FORK);
 	if (sem_wait(philo->forks_sem) == -1)
 		printf("sem_wait fail ---> philo_id=%d\n", philo->id);
 	talk_now(*philo, L_FORK);
-	pthread_mutex_unlock(&philo->mutex->dead);
+	// pthread_mutex_unlock(&philo->mutex->dead);
 }

@@ -34,6 +34,7 @@ typedef enum e_err
 	SIGACT_FAIL,
 	THR_JOIN_FAIL,
 	SEM_FAIL,
+	MUTEX_FAIL,
 	MALLOC_FAIL
 }			t_err;
 
