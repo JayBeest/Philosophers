@@ -10,31 +10,24 @@
 # ************************************************************************** #
 
 NAME = 	philo
-SRC =		philosopher.c \
+
+SHARED =	philosopher.c \
 			parser.c \
 			init.c \
 			timing.c \
-			threads.c \
 			act.c \
 			talk.c \
 			talk2.c \
 			utils.c
-
-SRC_BONUS =	philosopher.c \
-			parser.c \
-			init.c \
-			timing.c \
-			act.c \
-			talk.c \
-			talk2.c \
-			utils.c \
-			monitor.c \
+NO_BONUS =	threads.c
+DO_BONUS =	monitor.c \
 			child.c
 
 ifdef BONUS
 SRC_DIR = src/philo_bonus
-SRC = $(SRC_BONUS)
+SRC = $(SHARED) $(DO_BONUS)
 else
+SRC = $(SHARED) $(NO_BONUS)
 SRC_DIR = src/philo
 endif
 
