@@ -10,30 +10,36 @@
 # ************************************************************************** #
 
 NAME = 	philo
-
-SRC_NO_B =	philosopher.c \
+SRC =		philosopher.c \
+			parser.c \
 			init.c \
+			timing.c \
 			threads.c \
-			act.c
+			act.c \
+			talk.c \
+			talk2.c \
+			utils.c
 
-SRC_BONUS =	philosopher_bonus.c \
-			init_bonus.c \
-			act_bonus.c \
+SRC_BONUS =	philosopher.c \
+			parser.c \
+			init.c \
+			timing.c \
+			act.c \
+			talk.c \
+			talk2.c \
+			utils.c \
 			monitor.c \
 			child.c
 
 SRC_SHARE =	talk.c \
-			talk2.c \
-			utils.c \
-			timing.c \
-			parser.c 
+			talk2.c
 
 
-SRC_DIR = src/philo
 ifdef BONUS
-SRC = $(SRC_BONUS) $(SRC_SHARE)
+SRC_DIR = src/philo_bonus
+SRC = $(SRC_BONUS)
 else
-SRC = $(SRC_NO_B) $(SRC_SHARE)
+SRC_DIR = src/philo
 endif
 
 OBJ_DIR	= 	$(SRC_DIR)/obj
@@ -43,7 +49,7 @@ C_FLAGS = 	-Wall -Wextra -Werror -Ofast #-g -fsanitize=thread
 OBJ = 		$(SRC:%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
-	touch src/philo/philosopher_bonus.c
+	touch src/philo_bonus/philosopher.c
 
 bonus:
 	$(MAKE) BONUS=1 all
@@ -58,6 +64,7 @@ $(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 
 clean:
 	rm -rf src/philo/obj
+	rm -rf src/philo_bonus/obj
 
 fclean: clean
 	rm -f $(NAME)

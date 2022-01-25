@@ -13,7 +13,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <signal.h>
-#include <philosopher_bonus.h>
+#include <philosopher.h>
 #include <timing.h>
 #include <act.h>
 #include <child.h>

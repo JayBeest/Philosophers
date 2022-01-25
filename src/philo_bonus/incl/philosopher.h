@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHER_BONUS_H
-# define PHILOSOPHER_BONUS_H
+#ifndef PHILOSOPHER_H
+# define PHILOSOPHER_H
 
 # include <pthread.h>
 # include <semaphore.h>
