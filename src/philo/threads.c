@@ -15,8 +15,6 @@
 #include <timing.h>
 #include <act.h>
 
-#include <stdio.h>
-
 t_bool	someone_died(t_philo philo)
 {
 	pthread_mutex_lock(&philo.mutex->dead);

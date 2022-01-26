@@ -91,7 +91,7 @@ int	main(int argc, char **argv)
 	ft_bzero(&info, sizeof(info));
 	if (parse_input(argc, argv, &info.settings) == FALSE)
 		return (2);
-	if (init_struct(&info) == MALLOC_FAIL)
+	if (init_structs(&info) == MALLOC_FAIL)
 		return (3);
 	if (info.settings.num_philos == 1)
 	{

@@ -60,7 +60,7 @@ static t_err	init_philos(t_info *info)
 	return (NO_ERROR);
 }
 
-t_err	init_struct(t_info *info)
+t_err	init_structs(t_info *info)
 {
 	int	num_ph;
 

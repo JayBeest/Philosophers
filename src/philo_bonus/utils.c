@@ -12,6 +12,14 @@
 
 #include <philosopher.h>
 
+static int	ft_isspace(int c)
+{
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' \
+		|| c == '\r')
+		return (c);
+	return (0);
+}
+
 void	ft_bzero(void *ptr, size_t n)
 {
 	while (n > 0)
@@ -29,15 +37,7 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-static int	ft_isspace(int c)
-{
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' \
-		|| c == '\r')
-		return (c);
-	return (0);
-}
-
-char	*ft_skipspace(char const *str)
+char	*ft_skipspace(const char *str)
 {
 	while (ft_isspace(*str))
 		str++;

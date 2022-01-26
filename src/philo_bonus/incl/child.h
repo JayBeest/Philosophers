@@ -13,7 +13,7 @@
 #ifndef CHILD_H
 # define CHILD_H
 
-void	*philo_child(void *arg);
+t_err	philo_child(t_philo *philo);
 t_bool	someone_died(t_philo philo);
 
 #endif

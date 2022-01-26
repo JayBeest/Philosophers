@@ -15,7 +15,7 @@
 
 void	ft_bzero(void *ptr, size_t n);
 int		ft_isdigit(int c);
-char	*ft_skipspace(char const *str);
+char	*ft_skipspace(const char *str);
 int		ft_atoi(const char *ptr);
 
 #endif

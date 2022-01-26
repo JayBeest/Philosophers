@@ -15,7 +15,14 @@
 #include <philosopher.h>
 #include <utils.h>
 
-#include <stdio.h>
+static void	handle_interupt(int sig)
+{
+	(void)sig;
+	sem_unlink("forkpile");
+	sem_unlink("talk");
+	sem_unlink("died");
+	sem_unlink("death");
+}
 
 static t_err	init_philos(t_info *info)
 {
@@ -51,15 +58,6 @@ t_err	init_struct(t_info *info)
 	info->first_dying_sem = sem_open("death", O_CREAT, 0644, 1);
 	init_philos(info);
 	return (NO_ERROR);
-}
-
-static void	handle_interupt(int sig)
-{
-	(void)sig;
-	sem_unlink("forkpile");
-	sem_unlink("talk");
-	sem_unlink("died");
-	sem_unlink("death");
 }
 
 t_err	init_signal(void)

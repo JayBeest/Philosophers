@@ -15,8 +15,6 @@
 #include <philosopher.h>
 #include <child.h>
 
-#include <stdio.h>
-
 t_time_stamp	set_time(void)
 {
 	t_time_stamp	time_stamp;

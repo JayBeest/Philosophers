@@ -23,13 +23,13 @@
 #include <talk2.h>
 #include <utils.h>
 
-int	free_stuff(t_info info, int return_value)
+static int	free_stuff(t_info info, int return_value)
 {
 	free(info.philos);
 	return (return_value);
 }
 
-void	destroy(void)
+static void	destroy(void)
 {
 	sem_unlink("forkpile");
 	sem_unlink("talk");
@@ -37,7 +37,7 @@ void	destroy(void)
 	sem_unlink("death");
 }
 
-int	spawn_philos(t_info *info)
+static int	spawn_philos(t_info *info)
 {
 	int	id;
 	int	i;
@@ -61,7 +61,7 @@ int	spawn_philos(t_info *info)
 	return (0);
 }
 
-int	wait_philos(t_info *info)
+static int	wait_philos(t_info *info)
 {
 	int	i;
 

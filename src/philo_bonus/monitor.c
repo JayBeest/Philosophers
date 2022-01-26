@@ -18,28 +18,19 @@
 #include <act.h>
 #include <child.h>
 
-t_bool	is_full(t_philo philo)
-{
-	if (philo.settings->max_eat == 0)
-		return (FALSE);
-	else if (philo.times_eaten != philo.settings->max_eat)
-		return (FALSE);
-	return (TRUE);
-}
+//static void	kill_philos(t_info info)
+//{
+//	int	i;
+//
+//	i = 0;
+//	while (i < info.settings.num_philos)
+//	{
+//		kill(info.philos[i].pid, SIGKILL);
+//		i++;
+//	}
+//}
 
-void	kill_philos(t_info info)
-{
-	int	i;
-
-	i = 0;
-	while (i < info.settings.num_philos)
-	{
-		kill(info.philos[i].pid, SIGKILL);
-		i++;
-	}
-}
-
-int	check_death_timer(t_philo philo)
+static int	check_death_timer(t_philo philo)
 {
 	int	i;
 
@@ -56,7 +47,7 @@ int	check_death_timer(t_philo philo)
 	return (0);
 }
 
-void	drop_forks(t_philo philo)
+static void	drop_forks(t_philo philo)
 {
 	int	i;
 
@@ -66,6 +57,15 @@ void	drop_forks(t_philo philo)
 		sem_post(philo.forks_sem);
 		i++;
 	}
+}
+
+t_bool	is_full(t_philo philo)
+{
+	if (philo.settings->max_eat == 0)
+		return (FALSE);
+	else if (philo.times_eaten != philo.settings->max_eat)
+		return (FALSE);
+	return (TRUE);
 }
 
 void	*child_monitor_thread(void *arg)

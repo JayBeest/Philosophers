@@ -52,13 +52,13 @@ typedef struct s_time_stamp
 typedef struct s_settings
 {
 	int				num_philos;
+	int				max_eat;
+	int				nr_philos_full;
+	int				died;
 	t_msecs			die_time;
 	t_msecs			eat_time;
 	t_msecs			sleep_time;
-	int				max_eat;
 	t_time_stamp	start_time;
-	int				nr_philos_full;
-	int				died;
 }			t_settings;
 
 typedef struct s_mutex
@@ -71,10 +71,10 @@ typedef struct s_mutex
 
 typedef struct s_philo
 {
-	pthread_t		thread;
 	int				id;
-	t_time_stamp	last_eaten;
 	int				times_eaten;
+	t_time_stamp	last_eaten;
+	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_settings		*settings;

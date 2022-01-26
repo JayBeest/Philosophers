@@ -16,8 +16,6 @@
 #include <talk.h>
 #include <talk2.h>
 
-#include <stdio.h>
-
 void	talk_now(t_philo philo, t_message msg)
 {
 	static t_talk_ptr	fun_ptr[6] = {
