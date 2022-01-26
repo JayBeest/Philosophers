@@ -24,7 +24,7 @@ static void	handle_interupt(int sig)
 	sem_unlink("death");
 }
 
-static t_err	init_philos(t_info *info)
+static void	init_philos(t_info *info)
 {
 	int	i;
 
@@ -40,7 +40,6 @@ static t_err	init_philos(t_info *info)
 		info->philos[i].first_dying_sem = info->first_dying_sem;
 		i++;
 	}
-	return (NO_ERROR);
 }
 
 t_err	init_struct(t_info *info)
@@ -60,14 +59,13 @@ t_err	init_struct(t_info *info)
 	return (NO_ERROR);
 }
 
-t_err	init_signal(void)
+void	init_signal(void)
 {
 	struct sigaction	interupt;
 
 	interupt.sa_handler = handle_interupt;
 	sigaction(SIGINT, &interupt, NULL);
 	sigaction(SIGTERM, &interupt, NULL);
-	return (NO_ERROR);
 }
 
 t_err	init_mutexes(t_mutex *mutex)

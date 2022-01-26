@@ -13,9 +13,31 @@
 #include <philosopher.h>
 #include <utils.h>
 
+static t_bool	out_of_int_range(char *str)
+{
+	long	val;
+
+	val = 0;
+	str = ft_skipspace(str);
+	while (*str)
+	{
+		if (val == 0)
+			val = *str - 48;
+		else
+			val = val * 10 + (*str - 48);
+		str++;
+	}
+	if (val > 2147483647)
+		return (TRUE);
+	return (FALSE);
+}
+
 static t_bool	is_int(char *str)
 {
+	char	*temp;
+
 	str = ft_skipspace(str);
+	temp = str;
 	if (!*str)
 		return (FALSE);
 	while (*str)
@@ -24,6 +46,8 @@ static t_bool	is_int(char *str)
 			return (FALSE);
 		str++;
 	}
+	if (out_of_int_range(temp))
+		return (FALSE);
 	return (TRUE);
 }
 
@@ -48,6 +72,8 @@ t_bool	parse_input(int argc, char **argv, t_settings *settings)
 	if (argc == 6 && is_int(argv[5]))
 		settings->max_eat = ft_atoi(argv[5]);
 	else if (argc == 6)
+		return (FALSE);
+	if (settings->num_philos > MAX_FILOS)
 		return (FALSE);
 	return (TRUE);
 }

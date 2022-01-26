@@ -15,6 +15,7 @@
 
 # include <pthread.h>
 
+# define MAX_FILOS 999
 # define INTERVAL 512
 # define MONITORING_INTERVAL 2048
 
@@ -30,6 +31,7 @@ typedef enum e_bool
 typedef enum e_err
 {
 	NO_ERROR,
+	MUTEX_FAIL,
 	MALLOC_FAIL
 }			t_err;
 

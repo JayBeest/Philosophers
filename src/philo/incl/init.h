@@ -13,6 +13,7 @@
 #ifndef INIT_H
 # define INIT_H
 
+t_err	init_mutexes(int num_philos, t_mutex *mutex);
 t_err	init_structs(t_info *info);
 
 #endif

@@ -46,11 +46,10 @@ char	*ft_skipspace(char const *str)
 
 int	ft_atoi(const char *ptr)
 {
-	int	multip;
 	int	retv;
 
 	retv = 0;
-	multip = 1;
+	ptr = ft_skipspace(ptr);
 	while (*ptr)
 	{
 		if (retv == 0)
@@ -59,5 +58,5 @@ int	ft_atoi(const char *ptr)
 			retv = retv * 10 + (*ptr - 48);
 		ptr++;
 	}
-	return (retv * multip);
+	return (retv);
 }

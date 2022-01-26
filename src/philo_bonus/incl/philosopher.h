@@ -16,6 +16,7 @@
 # include <pthread.h>
 # include <semaphore.h>
 
+# define MAX_FILOS 999
 # define INTERVAL 512
 # define MONITORING_INTERVAL 2048
 

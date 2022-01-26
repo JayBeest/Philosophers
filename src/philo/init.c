@@ -14,27 +14,7 @@
 #include <philosopher.h>
 #include <utils.h>
 
-static t_bool	init_mutexes(int num_philos, t_mutex *mutex)
-{
-	int	i;
-
-	i = 0;
-	while (i < num_philos)
-	{
-		if (pthread_mutex_init(&mutex->forks[i], NULL) != 0)
-			return (FALSE);
-		i++;
-	}
-	if (pthread_mutex_init(&mutex->dead, NULL) != 0)
-		return (FALSE);
-	if (pthread_mutex_init(&mutex->full, NULL) != 0)
-		return (FALSE);
-	if (pthread_mutex_init(&mutex->talk, NULL) != 0)
-		return (FALSE);
-	return (TRUE);
-}
-
-static t_err	init_philos(t_info *info)
+static void	init_philos(t_info *info)
 {
 	int	i;
 
@@ -57,6 +37,25 @@ static t_err	init_philos(t_info *info)
 		}
 		i++;
 	}
+}
+
+t_err	init_mutexes(int num_philos, t_mutex *mutex)
+{
+	int	i;
+
+	i = 0;
+	while (i < num_philos)
+	{
+		if (pthread_mutex_init(&mutex->forks[i], NULL) != 0)
+			return (MUTEX_FAIL);
+		i++;
+	}
+	if (pthread_mutex_init(&mutex->dead, NULL) != 0)
+		return (MUTEX_FAIL);
+	if (pthread_mutex_init(&mutex->full, NULL) != 0)
+		return (MUTEX_FAIL);
+	if (pthread_mutex_init(&mutex->talk, NULL) != 0)
+		return (MUTEX_FAIL);
 	return (NO_ERROR);
 }
 
@@ -77,7 +76,6 @@ t_err	init_structs(t_info *info)
 		return (MALLOC_FAIL);
 	}
 	ft_bzero(info->mutex.forks, num_ph * sizeof(pthread_mutex_t));
-	init_mutexes(info->settings.num_philos, &info->mutex);
 	init_philos(info);
 	return (NO_ERROR);
 }

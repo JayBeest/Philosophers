@@ -14,7 +14,7 @@
 # define INIT_H
 
 t_err	init_struct(t_info *info);
-t_err	init_signal(void);
+void	init_signal(void);
 t_err	init_mutexes(t_mutex *mutex);
 
 #endif

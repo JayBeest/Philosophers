@@ -23,18 +23,19 @@
 #include <talk2.h>
 #include <utils.h>
 
-static int	free_stuff(t_info info, int return_value)
-{
-	free(info.philos);
-	return (return_value);
-}
-
 static void	destroy(void)
 {
 	sem_unlink("forkpile");
 	sem_unlink("talk");
 	sem_unlink("died");
 	sem_unlink("death");
+}
+
+static int	free_stuff(t_info info, int return_value)
+{
+	free(info.philos);
+	destroy();
+	return (return_value);
 }
 
 static int	spawn_philos(t_info *info)
@@ -61,7 +62,7 @@ static int	spawn_philos(t_info *info)
 	return (0);
 }
 
-static int	wait_philos(t_info *info)
+static void	wait_philos(t_info *info)
 {
 	int	i;
 
@@ -71,7 +72,6 @@ static int	wait_philos(t_info *info)
 		waitpid(-1, NULL, 0);
 		i++;
 	}
-	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -79,24 +79,21 @@ int	main(int argc, char **argv)
 	t_info	info;
 
 	if (argc < 5 || argc > 6)
-		return (1);
+		return (say_usage_error(1));
 	ft_bzero(&info, sizeof(info));
 	if (parse_input(argc, argv, &info.settings) == FALSE)
-		return (2);
+		return (say_usage_error(2));
 	if (init_struct(&info) == MALLOC_FAIL)
-		return (3);
+		return (printf("Malloc fail\n"));
 	if (init_mutexes(&info.mutex) == MUTEX_FAIL)
-		return (printf("MUTEX FAIL!!!!!!!!!!!!!!!!!!\n"));
+		return (printf("Mutex fail\n"));
 	if (info.settings.num_philos == 1)
 	{
 		single_philo(*info.philos);
-		destroy();
 		return (free_stuff(info, 0));
 	}
 	if (spawn_philos(&info) != 0)
 		return (free_stuff(info, 4));
-	if (wait_philos(&info) != 0)
-		return (free_stuff(info, 5));
-	destroy();
+	wait_philos(&info);
 	return (free_stuff(info, 0));
 }

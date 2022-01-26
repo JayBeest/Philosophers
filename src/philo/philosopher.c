@@ -87,12 +87,14 @@ int	main(int argc, char **argv)
 	t_info	info;
 
 	if (argc < 5 || argc > 6)
-		return (1);
+		return (say_usage_error(1));
 	ft_bzero(&info, sizeof(info));
 	if (parse_input(argc, argv, &info.settings) == FALSE)
-		return (2);
+		return (say_usage_error(2));
 	if (init_structs(&info) == MALLOC_FAIL)
-		return (3);
+		return (printf("Malloc FAIL\n"));
+	if (init_mutexes(info.settings.num_philos, &info.mutex) == MUTEX_FAIL)
+		return (printf("Mutex FAIL\n"));
 	if (info.settings.num_philos == 1)
 	{
 		single_philo(*info.philos);

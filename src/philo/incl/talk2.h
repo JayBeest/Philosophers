@@ -15,5 +15,6 @@
 
 void	say_die(t_philo philo, t_msecs time);
 void	single_philo(t_philo philo);
+int		say_usage_error(int return_value);
 
 #endif
