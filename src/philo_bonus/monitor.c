@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 22:25:06 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/13 20:08:40 by jcorneli         ###   ########.fr       */
+/*   Updated: 2022/01/27 01:44:41 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	drop_forks(t_philo philo)
 
 t_bool	is_full(t_philo philo)
 {
-	if (philo.settings->max_eat == 0 ||
+	if (philo.settings->max_eat == 0 || \
 			philo.times_eaten != philo.settings->max_eat)
 		return (FALSE);
 	return (TRUE);
