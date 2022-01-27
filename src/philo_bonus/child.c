@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include <philosopher.h>
 #include <act.h>
-#include <timing.h>
 #include <monitor.h>
 
 t_bool	someone_died(t_philo philo)

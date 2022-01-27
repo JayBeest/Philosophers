@@ -12,25 +12,12 @@
 
 #include <unistd.h>
 #include <stdio.h>
-#include <signal.h>
 #include <philosopher.h>
 #include <timing.h>
 #include <act.h>
 #include <child.h>
 
-//static void	kill_philos(t_info info)
-//{
-//	int	i;
-//
-//	i = 0;
-//	while (i < info.settings.num_philos)
-//	{
-//		kill(info.philos[i].pid, SIGKILL);
-//		i++;
-//	}
-//}
-
-static int	check_death_timer(t_philo philo)
+static t_bool	check_death_timer(t_philo philo)
 {
 	int	i;
 
@@ -42,9 +29,9 @@ static int	check_death_timer(t_philo philo)
 			sem_post(philo.died_sem);
 			i++;
 		}
-		return (1);
+		return (TRUE);
 	}
-	return (0);
+	return (FALSE);
 }
 
 static void	drop_forks(t_philo philo)
@@ -61,9 +48,8 @@ static void	drop_forks(t_philo philo)
 
 t_bool	is_full(t_philo philo)
 {
-	if (philo.settings->max_eat == 0)
-		return (FALSE);
-	else if (philo.times_eaten != philo.settings->max_eat)
+	if (philo.settings->max_eat == 0 ||
+			philo.times_eaten != philo.settings->max_eat)
 		return (FALSE);
 	return (TRUE);
 }

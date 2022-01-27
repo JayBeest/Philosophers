@@ -13,12 +13,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <signal.h>
 #include <philosopher.h>
 #include <parser.h>
 #include <init.h>
 #include <timing.h>
-#include <monitor.h>
 #include <child.h>
 #include <talk2.h>
 #include <utils.h>
@@ -52,7 +50,8 @@ static int	spawn_philos(t_info *info)
 			return (printf("Fork FAIL (philo[%d])\n", i));
 		else if (id == 0)
 		{
-			philo_child(&info->philos[i]);
+			if (philo_child(&info->philos[i]) == THR_JOIN_FAIL)
+				exit (printf("Thread join FAIL (philo[%d])\n", i));
 			exit (0);
 		}
 		info->philos[i].pid = id;
@@ -93,7 +92,7 @@ int	main(int argc, char **argv)
 		return (free_stuff(info, 0));
 	}
 	if (spawn_philos(&info) != 0)
-		return (free_stuff(info, 4));
+		return (free_stuff(info, 3));
 	wait_philos(&info);
 	return (free_stuff(info, 0));
 }

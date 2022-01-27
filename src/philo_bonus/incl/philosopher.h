@@ -69,7 +69,6 @@ typedef struct s_settings
 	t_msecs			sleep_time;
 	int				max_eat;
 	t_time_stamp	start_time;
-	int				nr_philos_full;
 	int				died;
 }			t_settings;
 
@@ -95,7 +94,6 @@ typedef struct s_info
 	sem_t			*died_sem;
 	sem_t			*first_dying_sem;
 	t_settings		settings;
-	pthread_t		monitor;
 	t_philo			*philos;
 	t_mutex			mutex;
 }			t_info;
