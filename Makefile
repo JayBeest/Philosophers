@@ -56,7 +56,7 @@ bonus:
 
 $(NAME): $(OBJ)
 	@echo
-	@echo "\033[36mLinking binary:          $@\033[0m"
+	@echo "\033[36mLinking binary file:     $@\033[0m"
 	@$(CC) $^ $(C_FLAGS) -o $@
 
 $(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
