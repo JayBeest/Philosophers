@@ -32,6 +32,10 @@ static void	destroy(void)
 static int	free_stuff(t_info info, int return_value)
 {
 	free(info.philos);
+	sem_close(info.forks_sem);
+	sem_close(info.talk_sem);
+	sem_close(info.died_sem);
+	sem_close(info.first_dying_sem);
 	destroy();
 	return (return_value);
 }
