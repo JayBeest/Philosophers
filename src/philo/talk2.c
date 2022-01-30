@@ -35,12 +35,10 @@ void	single_philo(t_philo philo)
 
 int	say_usage_error(int return_value)
 {
-	printf("\n   Error, wrong input\n\n");
-	printf("Usage: philo number_of_philos time_to_die time_to_eat ");
-	printf("time_to_sleep [number_of_times_to_eat]\n\n");
-	printf("     - max philos is set at 999\n");
-	printf("     - time is in milliseconds\n");
-	printf("     - only positive integer values\n");
-	printf("     - number_of_times_to_eat is optional\n\n");
+	printf(RED "\n   Error, wrong input\n\n" RESET);
+	printf(YEL "Usage: " RESET "philo " WHT "number_of_philos time_to_die ");
+	printf("time_to_eat time_to_sleep " RESET "[number_of_times_to_eat]\n\n");
+	printf("     - maximum philos is 999\n");
+	printf("     - time is in milliseconds\n\n");
 	return (return_value);
 }
