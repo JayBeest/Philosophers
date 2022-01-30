@@ -6,7 +6,7 @@
 /*   By: jcorneli <marvin@codam.nl>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 14:25:12 by jcorneli          #+#    #+#             */
-/*   Updated: 2021/12/07 14:25:12 by jcorneli         ###   ########.fr       */
+/*   Updated: 2022/01/30 13:23:09 by jcorneli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	single_philo(t_philo philo)
 {
 	printf(WHT "%6lu  " RESET, 0ul);
 	printf("Philosopher " WHT "%3d " RESET "has taken a ", 1);
-	printf(RED "fork\n");
+	printf(URED "fork\n");
 	usleep(philo.settings->die_time * 1000);
 	printf(WHT "%6lu  " RESET, philo.settings->die_time + 1);
 	printf("Philosopher " WHT "%3d ", 1);
