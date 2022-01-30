@@ -29,33 +29,50 @@ SRC = $(SHARED) $(DO_BONUS)
 else
 SRC = $(SHARED) $(NO_BONUS)
 SRC_DIR = src/philo
+$(info )
 endif
 
 OBJ_DIR	= 	$(SRC_DIR)/obj
 INCL = 		-I$(SRC_DIR)/incl
-C_FLAGS = 	-Wall -Wextra -Werror -Ofast #-g -fsanitize=thread
+C_FLAGS = 	-Wall -Wextra -Werror
 
 OBJ = 		$(SRC:%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
-	touch src/philo_bonus/philosopher.c
+	@echo
+	@echo "\033[32mDone building Philosophers (no bonus)\033[0m"
+	@echo
+	@touch src/philo_bonus/philosopher.c
+
+ball: $(NAME)
+	@echo
+	@echo "\033[32mDone building Philosophers (bonus)\033[0m"
+	@echo
+	@touch src/philo_bonus/philosopher.c
 
 bonus:
-	$(MAKE) BONUS=1 all
-	touch src/philo/philosopher.c
+	@$(MAKE) BONUS=1 ball
+	@touch src/philo/philosopher.c
 
 $(NAME): $(OBJ)
-	$(CC) $^ $(C_FLAGS) -o $@
+	@echo
+	@echo "\033[36mLinking binary:          $@\033[0m"
+	@$(CC) $^ $(C_FLAGS) -o $@
 
 $(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $< $(C_FLAGS) $(INCL) -c -o $@
+	@echo "\033[34mCompiling object file:   $@\033[0m"
+	@$(CC) $< $(C_FLAGS) $(INCL) -c -o $@
 
 clean:
-	rm -rf src/philo/obj
-	rm -rf src/philo_bonus/obj
+	@echo "\033[31mRemoving object files\033[0m"
+	@echo
+	@rm -rf src/philo/obj
+	@rm -rf src/philo_bonus/obj
 
 fclean: clean
-	rm -f $(NAME)
+	@echo "\033[31mRemoving binary\033[0m"
+	@echo
+	@rm -f $(NAME)
 
 re: clean all
